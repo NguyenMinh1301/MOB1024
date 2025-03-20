@@ -1,16 +1,19 @@
 package lab04;
 
 public class Student {
+    //Lớp student chứa các thuộc tính của sinh viên
     private String id;
     private String name;
     private String email;
     private String phone;
     private boolean gender;
     private String address;
-
+    
+    //Contructor không tham số
     public Student() {
     }
 
+    //Contructor có tham số
     public Student(String id, String name, String email, String phone, boolean gender, String address) {
         this.id = id;
         this.name = name;
@@ -19,7 +22,8 @@ public class Student {
         this.gender = gender;
         this.address = address;
     }
-
+    
+    //Getter và Shetter
     public String getId() {
         return id;
     }

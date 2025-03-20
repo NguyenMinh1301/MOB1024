@@ -1,7 +1,6 @@
 package lab04;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,47 +8,104 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class UserManagement extends javax.swing.JFrame {
-
+    
     public List<Student> list = new ArrayList<Student>();
     private int current = 0;
-
+    
+    //Constructor
     public UserManagement() {
         initComponents();
         loadDataToArray();
+        loadDataToJTable();
+        
     }
-
-    public void loadDataToArray() {
+    
+    //Phương thức đẩy dữ liệu lên JTable
+    public void loadDataToJTable() {
+        DefaultTableModel model = (DefaultTableModel) tblData.getModel();
+        //Set toàn bộ dòng trong JTable về 0 (xoá dữ liệu trong bảng để tạo lại)
+        model.setRowCount(0);
+        
+        //Try-catch bắt lỗi
         try (Connection con = DataBaseConnect.getConnection(); Statement stm = con.createStatement(); ResultSet rs = stm.executeQuery("SELECT * FROM Student")) {
+            //Vòng lặp để duyệt qua tất cả dữ liệu trong SQL Server
+            while (rs.next()) {
+                String gender;
+                
+                //Lấy giá trị của giới tính
+                try {
+                    gender = rs.getBoolean("Gender") ? "Male" : "Female";
+                } catch (Exception e) {
+                    gender = rs.getString("Gender");
+                }
+                
+                //Lưu các thông tin của sinh viên từ câu truy vấn
+                Object[] row = {
+                    rs.getString("ID"),
+                    rs.getString("Name"),
+                    rs.getString("Email"),
+                    rs.getString("Phone"),
+                    gender,
+                    rs.getString("Address")
+                };
+                //Add thông tin vào JTable
+                model.addRow(row);
+            }
 
+        } catch (SQLException ex) {
+            System.out.println("Error when push data to table " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error when push data to table", "Erorr", JOptionPane.ERROR);
+        }
+    }
+    
+    //Phương thức load dữ liệu vào mảng
+    public void loadDataToArray() {
+        //Try-catch bắt lỗi
+        try (Connection con = DataBaseConnect.getConnection(); Statement stm = con.createStatement(); ResultSet rs = stm.executeQuery("SELECT * FROM Student")) {
+            //Xoá dữ liệu trong danh sách cũ (nếu có)
             list.clear();
             while (rs.next()) {
+                //Tạo đối tượng sinh viên
                 Student sv = new Student();
+                
+                //Lưu thông tin vào model student
                 sv.setId(rs.getString("ID"));
                 sv.setName(rs.getString("Name"));
                 sv.setEmail(rs.getString("Email"));
                 sv.setPhone(rs.getString("Phone"));
                 sv.setGender(rs.getBoolean("Gender"));
                 sv.setAddress(rs.getString("Address"));
+                
+                //Add sinh viên vào list
                 list.add(sv);
             }
+            
+            //Đóng Connection và Statement
             con.close();
             stm.close();
 
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println("Error when load data to array " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error when load data to array", "Erorr", JOptionPane.ERROR);
         }
 
     }
 
     public void display(int i) {
+        //Tạo đối tượng Student từ danh sách list
         Student sv = list.get(i);
+        
+        //Đặt các thông tin của sinh viên lên textField tương ứng
         txtId.setText(sv.getId());
         txtName.setText(sv.getName());
         txtEmail.setText(sv.getEmail());
         txtPhone.setText(sv.getPhone());
         txtAddress.setText(sv.getAddress());
+        
+        //Lấy giá trị của giới tính
         boolean temp = sv.isGender();
         if (sv.isGender()) {
             rbMale.setSelected(true);
@@ -58,73 +114,92 @@ public class UserManagement extends javax.swing.JFrame {
         }
     }
 
+    //Phương thức add student
     public void addStudent() {
+        //Xoá dữ liệu hiện có trên textField
         txtId.setText("");
         txtName.setText("");
         txtEmail.setText("");
         txtPhone.setText("");
         txtAddress.setText("");
+        //Đặt con trỏ lên trên textField txtId
         txtId.requestFocus();
     }
 
+    //Phương thức xoá sinh viên
     public void removeStudent() {
+        //Nếu Id trống trong textField thả lỗi và dừng lại
         if (txtId.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Input student ID");
-            txtName.requestFocus();
+            System.out.println("Input student ID");
+            JOptionPane.showMessageDialog(this, "Input student ID", "Erorr", JOptionPane.ERROR_MESSAGE);
+            //Đặt con trỏ lên trên textField txtId
+            txtId.requestFocus();
             return;
         }
+        
+        //Try-catch bắt lỗi
         try (Connection con = DataBaseConnect.getConnection(); PreparedStatement stm = con.prepareStatement("DELETE FROM Student WHERE ID = ?")) {
-
+            
+            //Set tham số cho câu truy vấn
             stm.setString(1, txtId.getText());
+            
+            //Thực hiện câu truy vấn
             stm.execute();
-            JOptionPane.showMessageDialog(this, "Remove success");
-            display(current--);
+            JOptionPane.showMessageDialog(this, "Remove success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            list.remove(current);   //Xoá sinh viên ra khỏi danh sách
+            display(current--);     //Hiển thị thông tin sinh viên mới (sau khi xoá)
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Remove failed");
+            JOptionPane.showMessageDialog(this, "Remove failed", "Notification", JOptionPane.ERROR_MESSAGE);
             System.out.println(ex);
         }
 
     }
 
+    //Phương thức chỉnh sửa thông tin sinh viên
     public void updateStudent() {
         try (Connection con = DataBaseConnect.getConnection(); PreparedStatement stm = con.prepareStatement(
                 "UPDATE Student SET Name = ?, Email = ?, Phone = ?, Gender = ?, Address = ? WHERE ID = ?")) {
-
-            stm.setString(1, txtName.getText());
-            stm.setString(2, txtEmail.getText());
-            stm.setString(3, txtPhone.getText());
-            stm.setBoolean(4, rbMale.isSelected());
-            stm.setString(5, txtAddress.getText());
-            stm.setString(6, txtId.getText());
+            
+            //Set tham số cho câu truy vấn
+            stm.setString(1, txtName.getText());    //Tên
+            stm.setString(2, txtEmail.getText());   //Email
+            stm.setString(3, txtPhone.getText());   //Số điện thoại
+            stm.setBoolean(4, rbMale.isSelected()); //Giới tính
+            stm.setString(5, txtAddress.getText()); //Địa chỉ
+            stm.setString(6, txtId.getText());      //Id
+            //Thực hiện câu truy vấn
             stm.executeUpdate();
 
-            JOptionPane.showMessageDialog(this, "Update success");
-            con.close();
-            loadDataToArray();
+            JOptionPane.showMessageDialog(this, "Update success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            con.close();    //Đóng Connection
+            loadDataToArray();  //Load dữ liệu mới vào mảng
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Update failed");
+            JOptionPane.showMessageDialog(this, "Remove failed", "Error", JOptionPane.ERROR_MESSAGE);
             System.out.println(ex);
         }
     }
 
+    //Phương thức lưu sinh viên
     public void saveStudent() {
         try (Connection con = DataBaseConnect.getConnection(); PreparedStatement stm = con.prepareStatement(
                 "INSERT INTO Student (ID, Name, Email, Phone, Gender, Address) VALUES (?, ?, ?, ?, ?, ?)")) {
-
-            stm.setString(1, txtId.getText());
-            stm.setString(2, txtName.getText());
-            stm.setString(3, txtEmail.getText());
-            stm.setString(4, txtPhone.getText());
-            stm.setBoolean(5, rbMale.isSelected());
-            stm.setString(6, txtAddress.getText());
-
+            
+            //Set tham số cho câu truy vấn
+            stm.setString(1, txtId.getText());      //Id
+            stm.setString(2, txtName.getText());    //Tên
+            stm.setString(3, txtEmail.getText());   //Email
+            stm.setString(4, txtPhone.getText());   //Số điện thoại
+            stm.setBoolean(5, rbMale.isSelected()); //Giới tính
+            stm.setString(6, txtAddress.getText()); //Địa chỉ
+            //Thực hiện câu truy vấn
             stm.executeUpdate();
 
-            JOptionPane.showMessageDialog(this, "Save success");
-            con.close();
-            loadDataToArray();
+            JOptionPane.showMessageDialog(this, "Save success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            con.close();    //Đóng Connection
+            loadDataToArray();  //Load dữ liệu mới vào mảng
+            current++;
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Save failed");
+            JOptionPane.showMessageDialog(this, "Save failed", "Error", JOptionPane.ERROR_MESSAGE);
             System.out.println(ex);
         }
 
@@ -258,16 +333,41 @@ public class UserManagement extends javax.swing.JFrame {
 
         tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Name", "Email", "Phone", "Gender", "Address"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblData);
+        if (tblData.getColumnModel().getColumnCount() > 0) {
+            tblData.getColumnModel().getColumn(0).setResizable(false);
+            tblData.getColumnModel().getColumn(0).setPreferredWidth(45);
+            tblData.getColumnModel().getColumn(1).setResizable(false);
+            tblData.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblData.getColumnModel().getColumn(2).setResizable(false);
+            tblData.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tblData.getColumnModel().getColumn(3).setResizable(false);
+            tblData.getColumnModel().getColumn(4).setResizable(false);
+            tblData.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tblData.getColumnModel().getColumn(5).setResizable(false);
+            tblData.getColumnModel().getColumn(5).setPreferredWidth(180);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -426,18 +526,22 @@ public class UserManagement extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         addStudent();
+        loadDataToJTable();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         removeStudent();
+        loadDataToJTable();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         updateStudent();
+        loadDataToJTable();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         saveStudent();
+        loadDataToJTable();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     public static void main(String args[]) {
