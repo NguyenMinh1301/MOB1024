@@ -1,0 +1,17 @@
+package src.Connection;
+
+public class SQL_Server {
+    public static String SQL_Url = "localhost";
+    public static String SQL_Port = "1433";
+    public static String SQL_Database = "QL_SINHVIEN";
+    public static String SQL_User = "as";
+    public static String SQL_Password = "123";
+    
+    static final String ConnectURL = "jdbc:sqlserver://" + SQL_Url + ":" + SQL_Port
+            + ";databaseName=" + SQL_Database
+            + ";encrypt=true;trustServerCertificate=true";
+    
+    
+    //jdbc:sqlserver://localhost:1433;databaseName=TV00263;encrypt=true;trustServerCertificate=true
+    
+}
