@@ -13,6 +13,7 @@ public class Index extends javax.swing.JFrame {
         panScreen.setLayout(new java.awt.CardLayout());
         this.setVisible(false);
         Login lg = new Login();
+        lg.setVisible(true);
     }
 
     public void closeAll() {

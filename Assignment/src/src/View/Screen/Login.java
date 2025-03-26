@@ -1,8 +1,9 @@
 package src.View.Screen;
+
 import static src.DAO.DAO_Login.checkLogin;
 
-
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.event.KeyEvent;
 
 public class Login extends javax.swing.JFrame {
 
@@ -12,20 +13,19 @@ public class Login extends javax.swing.JFrame {
         this.setResizable(false);
         this.setTitle("Student management V 1.0.0");
     }
-    
+
     public void submit() {
         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
         boolean b = checkLogin(user, pass);
-        if ( b == false ) {
+        if (b == false) {
             return;
-        } else if ( b == true ) {
+        } else if (b == true) {
             Index main = new Index(user);
             this.dispose();
             main.setVisible(true);
         }
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -50,14 +50,29 @@ public class Login extends javax.swing.JFrame {
         lblUserName.setText("Username");
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
 
         btnLogin.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLogin.setText("LOGIN");
         btnLogin.setActionCommand("");
         btnLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPassword.setText("Password");
@@ -110,6 +125,32 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        submit();
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    submit();
+                }
+            }
+        });
+
+    }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    submit();
+                }
+            }
+        });
+
+    }//GEN-LAST:event_txtPasswordActionPerformed
     public static void main(String args[]) {
         FlatDarkLaf.setup();
 
