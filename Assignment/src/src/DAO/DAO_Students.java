@@ -3,7 +3,7 @@ package src.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import src.Connection.ConnectorHelper;
+import src.Connection.Connection_ConnectorHelper;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import src.Model.Model_Students;
 
 public interface DAO_Students {
 
-    default List<Model_Students> getAllEmployees() {
+    default List<Model_Students> getAllStudents() {
         List<Model_Students> studentsList = new ArrayList<>();
         String SQL = "SELECT * FROM STUDENTS";
         try (
-                Connection conn = ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL);) {
             while (rs.next()) {
                 studentsList.add(new Model_Students(
                         rs.getString("IdStudent"),
@@ -40,7 +40,7 @@ public interface DAO_Students {
         String SQL = "INSERT INTO STUDENTS ([IdStudent], [Name], [Email], [Phone], [Gender], [Address], [Avatar]) VALUES (?,?,?,?,?,?,?)";
         int check = 0;
         try (
-                Connection conn = ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
             prstm.setString(1, id);
             prstm.setString(2, name);
             prstm.setString(3, email);
@@ -61,7 +61,7 @@ public interface DAO_Students {
     default boolean updateStudent(String id, String name, String email, String phone, int gender, String address, String avatar) {
         String SQL = "UPDATE STUDENTS SET Name = ?, Email = ?, Phone = ?, Gender = ?, Address = ?, Avatar = ? WHERE IdStudent = ?";
         try (
-                Connection conn = ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
             prstm.setString(1, name);
             prstm.setString(2, email);
             prstm.setString(3, phone);
@@ -81,10 +81,23 @@ public interface DAO_Students {
         return false;
     }
 
+    default boolean deleteStudent(String id) {
+        String SQL = "DELETE FROM STUDENTS WHERE IdStudent = ?";
+        try (
+                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+            prstm.setString(1, id);
+            prstm.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            HandleException(ex);
+        }
+        return false;
+    }
+
     default boolean isDuplicate(String id) {
         String SQL = "SELECT COUNT(*) FROM STUDENTS WHERE IdStudent = ?";
         try (
-                Connection conn = ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
             prstm.setString(1, id);
             ResultSet rs = prstm.executeQuery();
             if (rs.next()) {

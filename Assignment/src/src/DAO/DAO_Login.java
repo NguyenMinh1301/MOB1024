@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import src.Connection.ConnectorHelper;
+import src.Connection.Connection_ConnectorHelper;
 import static src.DAO.HandleException.HandleException;
 
 public interface DAO_Login {
@@ -12,7 +12,7 @@ public interface DAO_Login {
     public static boolean checkLogin(String username, String password) {
         boolean b = false;
         try {
-            Connection conn = ConnectorHelper.connection();
+            Connection conn = Connection_ConnectorHelper.connection();
             String SQL = "SELECT username, password FROM USERS;";
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(SQL);

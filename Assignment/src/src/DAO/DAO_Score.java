@@ -6,10 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import src.Connection.ConnectorHelper;
+import src.Connection.Connection_ConnectorHelper;
 import src.Model.Model_Score;
 import static src.DAO.HandleException.HandleException;
-import src.Service.Service_Score;
 
 public interface DAO_Score {
     default List<Model_Score> getAllScores() {
@@ -17,7 +16,7 @@ public interface DAO_Score {
         String SQL = "SELECT s.IdStudent, st.Name, s.English, s.Computer, s.Physical FROM SCORES s JOIN STUDENTS st ON s.IdStudent = st.IdStudent";
 
         try (
-            Connection conn = ConnectorHelper.connection();
+            Connection conn = Connection_ConnectorHelper.connection();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(SQL)
         ) {

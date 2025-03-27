@@ -9,11 +9,11 @@ import src.Model.Model_Students;
 public class Service_Student implements DAO_Students {
 
     private List<Model_Students> studentsList = new ArrayList<>();
-    
+
     public List<Model_Students> getStudentData() {
-        return studentsList = getAllEmployees();
+        return studentsList = getAllStudents();
     }
-    
+
     public boolean addCheck(String id, String name, String email, String phone, int gender, String address, String avatar) {
         boolean b = false;
 
@@ -78,7 +78,7 @@ public class Service_Student implements DAO_Students {
         return b;
 
     }
-    
+
     public boolean updateCheck(String id, String name, String email, String phone, int gender, String address, String avatar) {
         boolean b = false;
 
@@ -132,5 +132,9 @@ public class Service_Student implements DAO_Students {
 
         return b;
 
+    }
+
+    public boolean deleteStudentById(String id) {
+        return deleteStudent(id);
     }
 }
