@@ -5,15 +5,30 @@ import src.DAO.DAO_Notification;
 
 public class Index extends javax.swing.JFrame {
 
+    public static String currentAdmin;
+    
     public Index() {
         DAO_Notification.announceError("An error occurred, please log in again");
-    }
-    
-    public Index(String s) {
-        panScreen.setLayout(new java.awt.CardLayout());
         this.setVisible(false);
         Login lg = new Login();
         lg.setVisible(true);
+    }
+    
+    public Index(String s) {
+        initComponents();
+        initDefaultData(s);
+        panScreen.setLayout(new java.awt.CardLayout());
+    }
+    
+    public void initDefaultData(String s) {
+        this.setTitle("Student management V 1.0.0 | " + s);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        Index.currentAdmin = s;
+        lblUserName.setText("username: " + currentAdmin);
+        closeAll();
+        Student studentPanel = new Student();  
+        panScreen.add(studentPanel); 
     }
 
     public void closeAll() {

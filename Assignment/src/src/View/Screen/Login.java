@@ -21,9 +21,9 @@ public class Login extends javax.swing.JFrame {
         if (b == false) {
             return;
         } else if (b == true) {
-            Index main = new Index(user);
+            Index index = new Index(user);
             this.dispose();
-            main.setVisible(true);
+            index.setVisible(true);
         }
     }
 
@@ -50,18 +50,8 @@ public class Login extends javax.swing.JFrame {
         lblUserName.setText("Username");
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        txtUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsernameActionPerformed(evt);
-            }
-        });
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
-            }
-        });
 
         btnLogin.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLogin.setText("LOGIN");
@@ -129,28 +119,6 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         submit();
     }//GEN-LAST:event_btnLoginActionPerformed
-
-    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
-        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                    submit();
-                }
-            }
-        });
-
-    }//GEN-LAST:event_txtUsernameActionPerformed
-
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                    submit();
-                }
-            }
-        });
-
-    }//GEN-LAST:event_txtPasswordActionPerformed
     public static void main(String args[]) {
         FlatDarkLaf.setup();
 

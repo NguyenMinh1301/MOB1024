@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import src.Connection.ConnectorHelper;
-import static src.DAO.DAO_HandleException.HandleException;
+import static src.DAO.HandleException.HandleException;
 
 public interface DAO_Login {
     
