@@ -17,4 +17,5 @@ public class ConnectorHelper extends SQL_Server {
     public static Connection connection() throws SQLException {
         return DriverManager.getConnection(ConnectURL, SQL_User, SQL_Password);
     }
+    
 }

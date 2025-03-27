@@ -11,7 +11,7 @@ INSERT INTO STUDENTS ([IdStudent], [Name], [Email], [Phone], [Gender], [Address]
 
 GO
 
-INSERT INTO GRADE ([IdStudent], [English], [Computer], [Physical]) VALUES
+INSERT INTO SCORES ([IdStudent], [English], [Computer], [Physical]) VALUES
     ('TV00001', 10, 10, 10)
   , ('TV00002', 7, 8, 6)
   , ('TV00003', 9, 6, 7)

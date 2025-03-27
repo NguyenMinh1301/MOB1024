@@ -1,14 +1,14 @@
 package src.Model;
 
-public class User {
+public class Model_User {
     private String username;
     private String password;
     private String role;
 
-    public User() {
+    public Model_User() {
     }
 
-    public User(String username, String password, String role) {
+    public Model_User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;

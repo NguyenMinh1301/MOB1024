@@ -1,6 +1,6 @@
 package src.Model;
 
-public class Students {
+public class Model_Students {
     private String id;
     private String name;
     private String email;
@@ -9,10 +9,10 @@ public class Students {
     private String address;
     private String avatar;
 
-    public Students() {
+    public Model_Students() {
     }
     
-    public Students(String id, String name, String email, String phone, boolean gender, String address, String avatar) {
+    public Model_Students(String id, String name, String email, String phone, boolean gender, String address, String avatar) {
         this.id = id;
         this.name = name;
         this.email = email;

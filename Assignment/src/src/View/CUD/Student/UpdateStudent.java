@@ -7,15 +7,20 @@ import src.View.Screen.Index;
 import static src.View.Screen.Index.currentAdmin;
 import src.View.Screen.Student;
 
-public class AddStudent extends javax.swing.JFrame {
+public class UpdateStudent extends javax.swing.JFrame {
 
     private Student studentPanel;
     private String path = "";
 
-    public AddStudent(Student studentPanel) {
-        this.studentPanel = studentPanel;
+    public UpdateStudent() {
         initComponents();
-        setTitle("Student management V 1.0.0 | ADD");
+        setTitle("Student management V 1.0.0 | UPDATE");
+    }
+
+    public UpdateStudent(String id, String name, String email, String phone, boolean gender, String address, String avatar, Student studentPanel) {
+        initComponents();
+        this.studentPanel = studentPanel;
+        setTitle("Student management V 1.0.0 | UPDATE | " + name);
         setResizable(false);
         setLocationRelativeTo(null);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -26,6 +31,21 @@ public class AddStudent extends javax.swing.JFrame {
                 index.setVisible(true);
             }
         });
+
+        txtId.setText(id);
+        txtId.setEnabled(false);
+        txtName.setText(name);
+        txtEmail.setText(email);
+        txtPhone.setText(phone);
+        txtAddress.setText(address);
+        if (gender) {
+            rdoMale.setSelected(true);
+        } else {
+            rdoFemale.setSelected(true);
+        }
+
+        this.path = avatar;
+        lblImage.setIcon(new ImageIcon(avatar));
     }
 
     @SuppressWarnings("unchecked")
@@ -47,7 +67,7 @@ public class AddStudent extends javax.swing.JFrame {
         lblAddress = new javax.swing.JLabel();
         lblGender = new javax.swing.JLabel();
         lblImage = new javax.swing.JLabel();
-        btnAdd = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         rdoMale = new javax.swing.JRadioButton();
         rdoFemale = new javax.swing.JRadioButton();
 
@@ -83,11 +103,11 @@ public class AddStudent extends javax.swing.JFrame {
             }
         });
 
-        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        btnAdd.setText("ADD");
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        btnUpdate.setText("UPDATE");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
 
@@ -132,7 +152,7 @@ public class AddStudent extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(panAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -146,7 +166,7 @@ public class AddStudent extends javax.swing.JFrame {
                     .addGroup(panAddLayout.createSequentialGroup()
                         .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(panAddLayout.createSequentialGroup()
                         .addGroup(panAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -205,7 +225,7 @@ public class AddStudent extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         String id = txtId.getText();
         String name = txtName.getText();
         String email = txtEmail.getText();
@@ -215,13 +235,12 @@ public class AddStudent extends javax.swing.JFrame {
         String avatar = path;
 
         Service_Student service = new Service_Student();
-        boolean addSuccess = service.addCheck(id, name, email, phone, gender, address, avatar);
+        boolean addSuccess = service.updateCheck(id, name, email, phone, gender, address, avatar);
         if (addSuccess == true) {
             studentPanel.initStudentsData();
             this.dispose();
         }
-
-    }//GEN-LAST:event_btnAddActionPerformed
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void lblImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImageMouseClicked
         JFileChooser chooser = new JFileChooser();
@@ -234,7 +253,7 @@ public class AddStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_lblImageMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup grpGender;
     private javax.swing.JLabel lblAddNewStudent;
     private javax.swing.JLabel lblAddress;

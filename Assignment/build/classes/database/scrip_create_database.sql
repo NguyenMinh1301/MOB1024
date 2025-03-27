@@ -18,8 +18,8 @@ CREATE TABLE STUDENTS (
 GO
 
 -- Create table Grade
-CREATE TABLE GRADE (
-	[Id] INT PRIMARY KEY
+CREATE TABLE SCORES (
+	[Id] INT PRIMARY KEY IDENTITY
   , [IdStudent] NVARCHAR(50)
   , [English] INT
   , [Computer] INT
@@ -37,7 +37,9 @@ CREATE TABLE USERS (
 
 GO
 
+SELECT s.IdStudent, st.Name, s.English, s.Computer, s.Physical FROM SCORES s JOIN STUDENTS st ON s.IdStudent = st.IdStudent
+
 -- Add constraint FK_IdStudent_Students
-ALTER TABLE GRADE
+ALTER TABLE SCORES
 ADD CONSTRAINT FK_IdStudent_Students
 FOREIGN KEY (IdStudent) REFERENCES Students(IdStudent)

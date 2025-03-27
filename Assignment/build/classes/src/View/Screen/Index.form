@@ -32,12 +32,10 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnChart" pref="179" max="32767" attributes="0"/>
+                          <Component id="btnChart" alignment="1" pref="179" max="32767" attributes="0"/>
                           <Component id="lblNameVersion" min="-2" max="-2" attributes="0"/>
                           <Component id="lblRoll" min="-2" max="-2" attributes="0"/>
                           <Component id="lblUserName" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnStudent" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnScore" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="lblStudentManagement" min="-2" max="-2" attributes="0"/>
@@ -52,10 +50,12 @@
                               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                               <Component id="lblIconUser" min="-2" pref="160" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="btnScore" alignment="1" max="32767" attributes="0"/>
+                          <Component id="btnStudent" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="panScreen" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -70,9 +70,9 @@
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               <Component id="lblVersion" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Component id="btnScore" min="-2" pref="43" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnStudent" min="-2" pref="43" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnScore" min="-2" pref="43" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnChart" min="-2" pref="43" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
@@ -111,7 +111,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Roll:"/>
+        <Property name="text" type="java.lang.String" value="Role:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNameVersion">
@@ -199,7 +199,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="1037" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="1031" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
