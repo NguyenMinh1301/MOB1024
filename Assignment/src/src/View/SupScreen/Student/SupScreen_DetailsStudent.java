@@ -2,6 +2,7 @@ package src.View.SupScreen.Student;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import src.View.Screen.View_Student;
 
 public class SupScreen_DetailsStudent extends javax.swing.JFrame {
@@ -12,6 +13,7 @@ public class SupScreen_DetailsStudent extends javax.swing.JFrame {
     public SupScreen_DetailsStudent() {
         initComponents();
         setTitle("Student management V 1.0.0 | DETAILS");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
     public SupScreen_DetailsStudent(String id, String name, String email, String phone, boolean gender, String address, String avatar, View_Student studentPanel) {
@@ -19,6 +21,7 @@ public class SupScreen_DetailsStudent extends javax.swing.JFrame {
         setTitle("Student management V 1.0.0 | DETAILS | " + name);
         setResizable(false);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         txtId.setText(id);
         txtName.setText(name);
@@ -63,6 +66,7 @@ public class SupScreen_DetailsStudent extends javax.swing.JFrame {
         lblImage = new javax.swing.JLabel();
         rdoMale = new javax.swing.JRadioButton();
         rdoFemale = new javax.swing.JRadioButton();
+        lblDetailsStudent = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -186,19 +190,28 @@ public class SupScreen_DetailsStudent extends javax.swing.JFrame {
 
         panAddLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtEmail, txtId, txtName, txtPhone});
 
+        lblDetailsStudent.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblDetailsStudent.setText("DETAILS STUDENT");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDetailsStudent)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblDetailsStudent)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -219,6 +232,7 @@ public class SupScreen_DetailsStudent extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblAddress;
+    private javax.swing.JLabel lblDetailsStudent;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblGender;
     private javax.swing.JLabel lblId;

@@ -3,7 +3,11 @@ package src.View.Screen;
 import static src.DAO.DAO_Login.checkLogin;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+import javax.swing.JTextField;
+import src.DAO.DAO_Notification;
 
 public class View_Login extends javax.swing.JFrame {
 
@@ -11,12 +15,21 @@ public class View_Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setTitle("Student management V 1.0.0");
+        this.setTitle("Student management V 1.0.1");
+        
+        addHint(txtUsername, "Username");
+        addHint(txtPassword, "Password");
     }
 
     public void submit() {
         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
+        
+        if (user.equals("Username") || pass.equals("Password")) {
+            DAO_Notification.announceWarning("Please enter your account and password");
+            return;
+        }
+        
         boolean b = checkLogin(user, pass);
         if (b == false) {
             return;
@@ -27,6 +40,29 @@ public class View_Login extends javax.swing.JFrame {
         }
     }
 
+    private void addHint(JTextField field, String hint) {
+        field.setForeground(Color.GRAY);
+        field.setText(hint);
+
+        field.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (field.getText().equals(hint)) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (field.getText().isEmpty()) {
+                    field.setText(hint);
+                    field.setForeground(Color.GRAY);
+                }
+            }
+        });
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -50,8 +86,18 @@ public class View_Login extends javax.swing.JFrame {
         lblUserName.setText("Username");
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtUsernameKeyReleased(evt);
+            }
+        });
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyReleased(evt);
+            }
+        });
 
         btnLogin.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLogin.setText("LOGIN");
@@ -119,14 +165,21 @@ public class View_Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         submit();
     }//GEN-LAST:event_btnLoginActionPerformed
-    public static void main(String args[]) {
-        FlatDarkLaf.setup();
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new View_Login().setVisible(true);
-            }
-        });
+    private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+            submit();
+        }
+    }//GEN-LAST:event_txtPasswordKeyReleased
+
+    private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
+        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+            submit();
+        }
+    }//GEN-LAST:event_txtUsernameKeyReleased
+    public static void main(String args[]) {
+        FlatLightLaf.setup();
+        new View_Login().setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

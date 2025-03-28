@@ -2,6 +2,7 @@ package src.View.SupScreen.Student;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import src.Service.Service_Student;
 import src.View.Screen.View_Index;
 import static src.View.Screen.View_Index.currentAdmin;
@@ -15,6 +16,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
     public SupScreen_UpdateStudent() {
         initComponents();
         setTitle("Student management V 1.0.0 | UPDATE");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public SupScreen_UpdateStudent(String id, String name, String email, String phone, boolean gender, String address, String avatar, View_Student studentPanel) {
@@ -23,14 +25,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
         setTitle("Student management V 1.0.0 | UPDATE | " + name);
         setResizable(false);
         setLocationRelativeTo(null);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                View_Index index = new View_Index(currentAdmin);
-                dispose();
-                index.setVisible(true);
-            }
-        });
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         txtId.setText(id);
         txtId.setEnabled(false);
@@ -53,7 +48,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
     private void initComponents() {
 
         grpGender = new javax.swing.ButtonGroup();
-        lblAddNewStudent = new javax.swing.JLabel();
+        lblUpdateStudent = new javax.swing.JLabel();
         panAdd = new javax.swing.JPanel();
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
@@ -73,8 +68,8 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblAddNewStudent.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblAddNewStudent.setText("ADD NEW STUDENT");
+        lblUpdateStudent.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblUpdateStudent.setText("UPDATE STUDENT");
 
         panAdd.setBorder(javax.swing.BorderFactory.createTitledBorder("ADD"));
 
@@ -176,8 +171,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
                     .addGroup(panAddLayout.createSequentialGroup()
                         .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panAddLayout.createSequentialGroup()
                         .addGroup(panAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblId)
@@ -203,8 +197,9 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
                         .addGroup(panAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panAddLayout.createSequentialGroup()
                                 .addComponent(lblAddress)
-                                .addContainerGap(139, Short.MAX_VALUE))
-                            .addComponent(txtAddress)))))
+                                .addGap(0, 133, Short.MAX_VALUE))
+                            .addComponent(txtAddress))))
+                .addContainerGap())
         );
 
         panAddLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtEmail, txtId, txtName, txtPhone});
@@ -217,7 +212,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblAddNewStudent)
+                        .addComponent(lblUpdateStudent)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(panAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -226,7 +221,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblAddNewStudent)
+                .addComponent(lblUpdateStudent)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -267,7 +262,6 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup grpGender;
-    private javax.swing.JLabel lblAddNewStudent;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblGender;
@@ -275,6 +269,7 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
     private javax.swing.JLabel lblImage;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPhone;
+    private javax.swing.JLabel lblUpdateStudent;
     private javax.swing.JPanel panAdd;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoMale;

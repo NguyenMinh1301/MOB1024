@@ -2,6 +2,7 @@ package src.View.SupScreen.Student;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import src.Service.Service_Student;
 import src.View.Screen.View_Index;
 import static src.View.Screen.View_Index.currentAdmin;
@@ -11,21 +12,14 @@ public class SupScreen_AddStudent extends javax.swing.JFrame {
 
     private View_Student studentPanel;
     private String path = "";
-
+    
     public SupScreen_AddStudent(View_Student studentPanel) {
         this.studentPanel = studentPanel;
         initComponents();
         setTitle("Student management V 1.0.0 | ADD");
         setResizable(false);
         setLocationRelativeTo(null);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                View_Index index = new View_Index(currentAdmin);
-                dispose();
-                index.setVisible(true);
-            }
-        });
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")
@@ -156,8 +150,7 @@ public class SupScreen_AddStudent extends javax.swing.JFrame {
                     .addGroup(panAddLayout.createSequentialGroup()
                         .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panAddLayout.createSequentialGroup()
                         .addGroup(panAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblId)
@@ -183,8 +176,9 @@ public class SupScreen_AddStudent extends javax.swing.JFrame {
                         .addGroup(panAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panAddLayout.createSequentialGroup()
                                 .addComponent(lblAddress)
-                                .addContainerGap(139, Short.MAX_VALUE))
-                            .addComponent(txtAddress)))))
+                                .addGap(0, 133, Short.MAX_VALUE))
+                            .addComponent(txtAddress))))
+                .addContainerGap())
         );
 
         panAddLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtEmail, txtId, txtName, txtPhone});

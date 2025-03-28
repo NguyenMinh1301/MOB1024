@@ -36,6 +36,25 @@ public interface DAO_Students {
         return studentsList;
     }
 
+    default List<Model_Students> getAllStudentWithIdAndName() {
+        List<Model_Students> studentsList = new ArrayList<>();
+        String SQL = "SELECT IdStudent, Name FROM STUDENTS;";
+
+        try (
+                Connection conn = Connection_ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL);) {
+            while (rs.next()) {
+                Model_Students studentList = new Model_Students();
+                studentList.setId(rs.getString("IdStudent"));
+                studentList.setName(rs.getString("Name"));
+                studentsList.add(studentList);
+            }
+        } catch (SQLException ex) {
+            HandleException(ex);
+        }
+
+        return studentsList;
+    }
+
     default int addStudent(String id, String name, String email, String phone, int gender, String address, String avatar) {
         String SQL = "INSERT INTO STUDENTS ([IdStudent], [Name], [Email], [Phone], [Gender], [Address], [Avatar]) VALUES (?,?,?,?,?,?,?)";
         int check = 0;

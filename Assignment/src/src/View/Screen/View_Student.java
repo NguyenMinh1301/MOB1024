@@ -37,10 +37,6 @@ public class View_Student extends javax.swing.JPanel {
         this.tblStudents.setModel(model);
     }
 
-    private static void setColumnWidth(JTable table, int columnIndex, int width) {
-        table.getColumnModel().getColumn(columnIndex).setPreferredWidth(width);
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -50,7 +46,7 @@ public class View_Student extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
-        btnSreach = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
         btnExport = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
@@ -69,7 +65,7 @@ public class View_Student extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Email", "Phone", "Gender", "Address", "Avatar"
+                "Id Student", "Name", "Email", "Phone", "Gender", "Address", "Avatar"
             }
         ) {
             Class[] types = new Class [] {
@@ -124,18 +120,23 @@ public class View_Student extends javax.swing.JPanel {
             }
         });
 
-        btnSreach.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        btnSreach.setText("SREACH");
-        btnSreach.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnSreach.addActionListener(new java.awt.event.ActionListener() {
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        btnSearch.setText("SEARCH");
+        btnSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSreachActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
 
         btnExport.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnExport.setText("EXPORT");
         btnExport.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnRefresh.setText("REFRESH");
@@ -174,7 +175,7 @@ public class View_Student extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSreach, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -196,7 +197,7 @@ public class View_Student extends javax.swing.JPanel {
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnSreach, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -205,7 +206,7 @@ public class View_Student extends javax.swing.JPanel {
                     .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -285,15 +286,13 @@ public class View_Student extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnRemoveActionPerformed
 
-    private void btnSreachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSreachActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String input = txtSearch.getText().trim();
+        if (input.isEmpty()) {
+            initStudentsData();
+        }
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
         model.setRowCount(0);
-
-        String input = txtSearch.getText().trim();
-        if (input.length() <= 0) {
-            return;
-        }
-
         boolean found = false;
         for (Model_Students s : service.getStudentData()) {
             if (s.getId().equalsIgnoreCase(input) || s.getName().equalsIgnoreCase(input)) {
@@ -310,11 +309,11 @@ public class View_Student extends javax.swing.JPanel {
                 break;
             }
         }
-        
-        if(!found) {
+
+        if (!found) {
             DAO_Notification.announceWarning("No student found with Name or Id as: " + input);
         }
-    }//GEN-LAST:event_btnSreachActionPerformed
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         initStudentsData();
@@ -328,7 +327,7 @@ public class View_Student extends javax.swing.JPanel {
             DAO_Notification.announceWarning("Cannot remove student if not selected !");
             return;
         }
-        
+
         String id = model.getValueAt(index, 0).toString();
         String name = model.getValueAt(index, 1).toString();
         String email = model.getValueAt(index, 2).toString();
@@ -342,6 +341,10 @@ public class View_Student extends javax.swing.JPanel {
         detailsForm.setVisible(true);
     }//GEN-LAST:event_btnDetailsActionPerformed
 
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+
+    }//GEN-LAST:event_btnExportActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -350,7 +353,7 @@ public class View_Student extends javax.swing.JPanel {
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btnRemove;
-    private javax.swing.JButton btnSreach;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblStudents;

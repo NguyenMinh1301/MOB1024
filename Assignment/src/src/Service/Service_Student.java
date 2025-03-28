@@ -14,6 +14,10 @@ public class Service_Student implements DAO_Students {
         return studentsList = getAllStudents();
     }
 
+    public List<Model_Students> getStudentIdAndName() {
+        return getAllStudentWithIdAndName();
+    }
+    
     public boolean addCheck(String id, String name, String email, String phone, int gender, String address, String avatar) {
         boolean b = false;
 
