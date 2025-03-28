@@ -1,13 +1,12 @@
 package src.View.Screen;
 
-import static src.DAO.DAO_Login.checkLogin;
-
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import src.DAO.DAO_Notification;
+import src.Service.Service_Login;
 
 public class View_Login extends javax.swing.JFrame {
 
@@ -16,7 +15,7 @@ public class View_Login extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Student management V 1.0.1");
-        
+
         addHint(txtUsername, "Username");
         addHint(txtPassword, "Password");
     }
@@ -24,13 +23,15 @@ public class View_Login extends javax.swing.JFrame {
     public void submit() {
         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
-        
+
         if (user.equals("Username") || pass.equals("Password")) {
             DAO_Notification.announceWarning("Please enter your account and password");
             return;
         }
-        
-        boolean b = checkLogin(user, pass);
+
+        Service_Login service = new Service_Login();
+        boolean b = service.checkLogin(user, pass);
+
         if (b == false) {
             return;
         } else if (b == true) {
@@ -62,7 +63,7 @@ public class View_Login extends javax.swing.JFrame {
             }
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -74,6 +75,7 @@ public class View_Login extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         lblPassword = new javax.swing.JLabel();
+        btnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,6 +115,17 @@ public class View_Login extends javax.swing.JFrame {
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPassword.setText("Password");
 
+        btnRegister.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnRegister.setText("REGISTER");
+        btnRegister.setActionCommand("");
+        btnRegister.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,7 +144,8 @@ public class View_Login extends javax.swing.JFrame {
                             .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblUserName)
                             .addComponent(lblPassword)
-                            .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(46, Short.MAX_VALUE))))
         );
 
@@ -153,6 +167,8 @@ public class View_Login extends javax.swing.JFrame {
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -167,16 +183,22 @@ public class View_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtPasswordKeyReleased
 
     private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtUsernameKeyReleased
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        View_Register index = new View_Register();
+        this.dispose();
+        index.setVisible(true);
+    }//GEN-LAST:event_btnRegisterActionPerformed
     public static void main(String args[]) {
         FlatLightLaf.setup();
         new View_Login().setVisible(true);
@@ -184,6 +206,7 @@ public class View_Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel lblIconLogin;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblPassword;

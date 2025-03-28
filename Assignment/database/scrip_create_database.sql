@@ -31,7 +31,7 @@ GO
 -- Create table user
 CREATE TABLE USERS (
 	[username] NVARCHAR(50) PRIMARY KEY
-  , [password] NVARCHAR(50)
+  , [password] NVARCHAR(255)
   , [roleid] INT
 )
 
@@ -51,8 +51,7 @@ ALTER TABLE USERS
 ADD CONSTRAINT FK_roleid_ROLES
 FOREIGN KEY (roleid) REFERENCES ROLES(roleid)
 
+select * from users
 
 
-SELECT IdStudent, Name FROM STUDENTS
-select * from SCORES
-INSERT INTO SCORES (IdStudent, English, Computer, Physical) VALUES ('s', 1, 1, 1)
+

@@ -1,32 +1,39 @@
 package src.Service;
-import static src.DAO.DAO_Notification.*;
-        
-public class Service_Login {
-    public static boolean checkLogin(String name, String pass) {
-        boolean b = false;
-        
-        //Check
-        if ( name.length() <= 0 ) {
-            announceWarning("You have not entered Username !");
-            return b;
-        }
-        
-        if ( pass.length() <= 0 ) {
-            announceWarning("You have not entered Password !");
-            return b;
-        }
-        
-        //DAO
-        b = checkLogin(name, pass);
-        
-        if ( b == false ) {
-            announceError("Login failed !");
-            return b;
-        } else if ( b == true ) {
-            announceInfo("Login success !");
-            return b;
-        }
-        
-        return b;
+
+import static src.DAO.DAO_Notification.announceWarning;
+import static src.DAO.DAO_Notification.announceError;
+import static src.DAO.DAO_Notification.announceInfo;
+import src.DAO.DAO_Login;
+
+public class Service_Login implements DAO_Login{
+    public boolean checkLogin(String name, String pass) {
+    if (name.length() <= 0) {
+        announceWarning("You have not entered Username !");
+        return false;
     }
+
+    if (pass.length() <= 0) {
+        announceWarning("You have not entered Password !");
+        return false;
+    }
+
+    if (!isExistUser(name)) {
+        announceWarning("Account does not exist !");
+        return false;
+    }
+
+    String hashed = getHashedPasswordByUsername(name);
+    if (hashed == null) {
+        announceError("Unable to retrieve password from system.");
+        return false;
+    }
+
+    if (!Service_BCrypt.BCryptUtils.checkPassword(pass, hashed)) {
+        announceWarning("Wrong password !");
+        return false;
+    }
+
+    announceInfo("Login success !");
+    return true;
+}
 }
