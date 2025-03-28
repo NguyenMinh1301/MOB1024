@@ -1,14 +1,19 @@
 package src.View.Screen;
 
+import java.awt.Color;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import src.DAO.DAO_Notification;
 import src.Model.Model_Students;
 import src.Service.Service_Student;
 import src.View.SupScreen.Student.SupScreen_AddStudent;
 import src.View.SupScreen.Student.SupScreen_DetailsStudent;
 import src.View.SupScreen.Student.SupScreen_UpdateStudent;
+import src.DAO.HandleNotification;
 
 public class View_Student extends javax.swing.JPanel {
 
@@ -17,6 +22,9 @@ public class View_Student extends javax.swing.JPanel {
     public View_Student() {
         initComponents();
         initStudentsData();
+        addHint(txtSearch, "Id or name");
+        initSearch();
+        
     }
 
     public void initStudentsData() {
@@ -29,12 +37,79 @@ public class View_Student extends javax.swing.JPanel {
                 x.getName(),
                 x.getEmail(),
                 x.getPhone(),
-                x.isGender() ? "Nam" : "Nữ",
+                x.isGender() ? "Male" : "Female",
                 x.getAddress(),
                 x.getAvatar()
             });
         }
         this.tblStudents.setModel(model);
+    }
+
+    public void initSearch() {
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                performLiveSearch();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                performLiveSearch();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                performLiveSearch();
+            }
+
+            private void performLiveSearch() {
+                String keyword = txtSearch.getText().trim();
+                if (keyword.equals("Id or name") || !txtSearch.hasFocus()) {
+                    return;
+                }
+                
+                List<Model_Students> result = new Service_Student().searchStudent(keyword);
+
+                DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
+                model.setRowCount(0);
+
+                for (Model_Students s : result) {
+                    model.addRow(new Object[]{
+                        s.getId(),
+                        s.getName(),
+                        s.getEmail(),
+                        s.getPhone(),
+                        s.isGender() ? "Male" : "Female",
+                        s.getAddress(),
+                        s.getAvatar()
+                    });
+                }
+            }
+        });
+
+    }
+
+    private void addHint(JTextField field, String hint) {
+        field.setForeground(Color.GRAY);
+        field.setText(hint);
+
+        field.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (field.getText().equals(hint)) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (field.getText().isEmpty()) {
+                    field.setText(hint);
+                    field.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -129,6 +204,8 @@ public class View_Student extends javax.swing.JPanel {
             }
         });
 
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         btnExport.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnExport.setText("EXPORT");
         btnExport.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -206,7 +283,7 @@ public class View_Student extends javax.swing.JPanel {
                     .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -221,7 +298,7 @@ public class View_Student extends javax.swing.JPanel {
         int index = tblStudents.getSelectedRow();
 
         if (index == -1) {
-            DAO_Notification.announceWarning("Cannot update student if not selected !");
+            HandleNotification.announceWarning("Cannot update student if not selected !");
             return;
         }
 
@@ -230,7 +307,7 @@ public class View_Student extends javax.swing.JPanel {
         String email = model.getValueAt(index, 2).toString();
         String phone = model.getValueAt(index, 3).toString();
         String genderStr = model.getValueAt(index, 4).toString();
-        boolean gender = genderStr.equalsIgnoreCase("Nam");
+        boolean gender = genderStr.equalsIgnoreCase("Male");
         String address = model.getValueAt(index, 5).toString();
         String avatar = model.getValueAt(index, 6).toString();
 
@@ -243,7 +320,7 @@ public class View_Student extends javax.swing.JPanel {
         int index = tblStudents.getSelectedRow();
 
         if (index == -1) {
-            DAO_Notification.announceWarning("Cannot remove student if not selected !");
+            HandleNotification.announceWarning("Cannot remove student if not selected !");
             return;
         }
 
@@ -270,15 +347,15 @@ public class View_Student extends javax.swing.JPanel {
                 Service_Student service = new Service_Student();
                 boolean deleted = service.deleteStudentById(id);
                 if (deleted) {
-                    DAO_Notification.announceInfo("Delete student " + name + " success!");
+                    HandleNotification.announceInfo("Delete student " + name + " success!");
                     initStudentsData();
                     break;
                 } else {
-                    DAO_Notification.announceWarning("Delete student " + name + " failed!");
+                    HandleNotification.announceWarning("Delete student " + name + " failed!");
                     break;
                 }
             } else {
-                DAO_Notification.announceWarning("Name does not match please re-enter");
+                HandleNotification.announceWarning("Name does not match please re-enter");
             }
 
         }
@@ -287,31 +364,27 @@ public class View_Student extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String input = txtSearch.getText().trim();
-        if (input.isEmpty()) {
-            initStudentsData();
-        }
-        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
-        model.setRowCount(0);
-        boolean found = false;
-        for (Model_Students s : service.getStudentData()) {
-            if (s.getId().equalsIgnoreCase(input) || s.getName().equalsIgnoreCase(input)) {
-                model.addRow(new Object[]{
-                    s.getId(),
-                    s.getName(),
-                    s.getEmail(),
-                    s.getPhone(),
-                    s.isGender() ? "Male" : "Female",
-                    s.getAddress(),
-                    s.getAvatar()
-                });
-                found = true;
-                break;
-            }
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            HandleNotification.announceWarning("Please enter ID or Name to search.");
+            return;
         }
 
-        if (!found) {
-            DAO_Notification.announceWarning("No student found with Name or Id as: " + input);
+        List<Model_Students> result = new Service_Student().searchStudents(keyword);
+        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
+        model.setRowCount(0);
+
+        for (Model_Students s : result) {
+            model.addRow(new Object[]{
+                s.getId(),
+                s.getName(),
+                s.getEmail(),
+                s.getPhone(),
+                s.isGender() ? "Male" : "Female",
+                s.getAddress(),
+                s.getAvatar()
+            });
+
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -324,7 +397,7 @@ public class View_Student extends javax.swing.JPanel {
         int index = tblStudents.getSelectedRow();
 
         if (index == -1) {
-            DAO_Notification.announceWarning("Cannot remove student if not selected !");
+            HandleNotification.announceWarning("Cannot remove student if not selected !");
             return;
         }
 

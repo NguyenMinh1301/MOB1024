@@ -1,6 +1,8 @@
 package src.View.SupScreen.Score;
 
+import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import src.Model.Model_Students;
 import src.Service.Service_Score;
@@ -15,10 +17,14 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
         this.scorePanel = scorePanel;
         initComponents();
         initStudentsData();
-        setTitle("Student management V 1.0.0 | ADD");
         setResizable(false);
         setLocationRelativeTo(null);
+        setTitle("Student management V 1.0.0 | ADD");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        txtId.setEnabled(false);
+        txtName.setEnabled(false);
+        txtAvarage.setEnabled(false);
     }
 
     public void initStudentsData() {
@@ -33,16 +39,37 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
             });
         }
     }
-
+    
     private void updateAverage() {
+        updateAverageFromFields(txtEnglish, txtComputer, txtPhysical, txtAvarage);
+    }
+    
+    private void updateAverageFromFields(JTextField englishField, JTextField computerField, JTextField physicalField, JTextField averageField) {
         try {
-            float e = Float.parseFloat(txtEnglish.getText());
-            float c = Float.parseFloat(txtComputer.getText());
-            float p = Float.parseFloat(txtPhysical.getText());
-            float avg = (e + c + p) / 3f;
-            txtAvarage.setText(String.format("%.2f", avg));
+            float english = Float.parseFloat(englishField.getText());
+            float computer = Float.parseFloat(computerField.getText());
+            float physical = Float.parseFloat(physicalField.getText());
+
+            float average = (english + computer + physical) / 3f;
+            averageField.setText(String.format("%.2f", average));
+
+            setColorByScore(englishField, english);
+            setColorByScore(computerField, computer);
+            setColorByScore(physicalField, physical);
+            setColorByScore(averageField, average);
+
         } catch (NumberFormatException ex) {
-            txtAvarage.setText("");
+            averageField.setText("");
+        }
+    }
+
+    private void setColorByScore(JTextField field, float score) {
+        if (score < 5.0f) {
+            field.setForeground(Color.RED);
+        } else if (score < 7.0f) {
+            field.setForeground(Color.ORANGE);
+        } else {
+            field.setForeground(new Color(0, 128, 0));
         }
     }
 
@@ -81,9 +108,9 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
         lblId.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblId.setText("ID");
 
-        txtId.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtId.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
-        txtName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         lblName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblName.setText("NAME");
@@ -91,14 +118,14 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
         lblEnglish.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblEnglish.setText("ENGLISH");
 
-        txtEnglish.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtEnglish.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtEnglish.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtEnglishKeyReleased(evt);
             }
         });
 
-        txtComputer.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtComputer.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtComputer.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtComputerKeyReleased(evt);
@@ -108,7 +135,7 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
         lblComputer.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblComputer.setText("COMPUTER");
 
-        txtPhysical.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPhysical.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPhysical.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtPhysicalKeyReleased(evt);
@@ -118,7 +145,7 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
         lblPhysical.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblPhysical.setText("PHYSICAL");
 
-        txtAvarage.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtAvarage.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         lblAvarage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblAvarage.setText("AVERAGE");
@@ -261,14 +288,12 @@ public class SupScreen_AddScore extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblAddScore)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblAddScore)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panTableStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(panTableStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

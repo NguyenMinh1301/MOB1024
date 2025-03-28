@@ -36,6 +36,34 @@ public interface DAO_Students {
         return studentsList;
     }
 
+    default List<Model_Students> searchStudent(String keyword) {
+        List<Model_Students> studentsList = new ArrayList<>();
+        String SQL = "SELECT * FROM STUDENTS WHERE IdStudent LIKE ? OR Name LIKE ?";
+        try (
+                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL)) {
+            String key = "%" + keyword + "%";
+            prstm.setString(1, key);
+            prstm.setString(2, key);
+            ResultSet rs = prstm.executeQuery();
+
+            while (rs.next()) {
+                studentsList.add(new Model_Students(
+                        rs.getString("IdStudent"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("Phone"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("Avatar")
+                ));
+            }
+
+        } catch (SQLException ex) {
+            HandleException(ex);
+        }
+        return studentsList;
+    }
+    
     default List<Model_Students> getAllStudentWithIdAndName() {
         List<Model_Students> studentsList = new ArrayList<>();
         String SQL = "SELECT IdStudent, Name FROM STUDENTS;";
@@ -69,7 +97,7 @@ public interface DAO_Students {
             prstm.setString(7, avatar);
             prstm.executeUpdate();
             check = 1;
-            DAO_Notification.announceInfo("<html>Successfully added student <u>" + name + "</u> !</html>");
+            HandleNotification.announceInfo("<html>Successfully added student <u>" + name + "</u> !</html>");
             return check;
         } catch (SQLException ex) {
             HandleException(ex);
@@ -91,7 +119,7 @@ public interface DAO_Students {
 
             int rows = prstm.executeUpdate();
             if (rows > 0) {
-                DAO_Notification.announceInfo("<html>Successfully updated student <u>" + name + "</u> !</html>");
+                HandleNotification.announceInfo("<html>Successfully updated student <u>" + name + "</u> !</html>");
                 return true;
             }
         } catch (SQLException ex) {

@@ -240,8 +240,8 @@ public class SupScreen_UpdateStudent extends javax.swing.JFrame {
         String avatar = path;
 
         Service_Student service = new Service_Student();
-        boolean addSuccess = service.updateCheck(id, name, email, phone, gender, address, avatar);
-        if (addSuccess == true) {
+        boolean updateSuccess = service.updateCheck(id, name, email, phone, gender, address, avatar);
+        if (updateSuccess == true) {
             studentPanel.initStudentsData();
             this.dispose();
         }

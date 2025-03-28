@@ -103,7 +103,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Username:"/>
+        <Property name="text" type="java.lang.String" value="username:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblRoll">
@@ -111,7 +111,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Role:"/>
+        <Property name="text" type="java.lang.String" value="role:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNameVersion">

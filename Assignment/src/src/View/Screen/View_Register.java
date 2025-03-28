@@ -3,8 +3,8 @@ package src.View.Screen;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
-import src.DAO.DAO_Notification;
 import src.Service.Service_Register;
+import src.DAO.HandleNotification;
 
 public class View_Register extends javax.swing.JFrame {
 
@@ -26,7 +26,7 @@ public class View_Register extends javax.swing.JFrame {
         String confirmPass = String.valueOf(txtConfirmPassword.getPassword());
         
         if (user.equals("Username") || pass.equals("Password") || pass.equals("Confirm password")) {
-            DAO_Notification.announceWarning("Please enter your account and password");
+            HandleNotification.announceWarning("Please enter your account and password");
             return;
         }
         
@@ -35,7 +35,7 @@ public class View_Register extends javax.swing.JFrame {
         if (b == false) {
             return;
         } else if (b == true) {
-            DAO_Notification.announceInfo("Registration successful!");
+            HandleNotification.announceInfo("Registration successful!");
             View_Login login = new View_Login();
             this.dispose();
             login.setVisible(true);
@@ -79,6 +79,7 @@ public class View_Register extends javax.swing.JFrame {
         txtConfirmPassword = new javax.swing.JPasswordField();
         lblConfirmPassword = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
+        lblNameVersion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,27 +140,34 @@ public class View_Register extends javax.swing.JFrame {
             }
         });
 
+        lblNameVersion.setText("Student Management (V 1.0.0)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblIconLogin)
-                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUserName)
-                    .addComponent(lblPassword)
-                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblConfirmPassword)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(lblRegister)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUserName)
+                            .addComponent(lblPassword)
+                            .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblConfirmPassword)
+                            .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(97, 97, 97)
+                                .addComponent(lblRegister)))
+                        .addContainerGap(45, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblNameVersion)
+                        .addContainerGap())))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtPassword, txtUsername});
@@ -184,9 +192,11 @@ public class View_Register extends javax.swing.JFrame {
                 .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblNameVersion)
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnRegister, txtPassword, txtUsername});
@@ -228,6 +238,7 @@ public class View_Register extends javax.swing.JFrame {
     private javax.swing.JButton btnRegister;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblIconLogin;
+    private javax.swing.JLabel lblNameVersion;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblRegister;
     private javax.swing.JLabel lblUserName;

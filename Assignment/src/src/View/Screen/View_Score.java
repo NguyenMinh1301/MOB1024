@@ -1,17 +1,28 @@
 package src.View.Screen;
 
+import java.util.List;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import src.Service.Service_Score;
 import src.Model.Model_Score;
 import src.View.SupScreen.Score.SupScreen_AddScore;
+import src.View.SupScreen.Score.SupScreen_UpdateScore;
+import src.DAO.HandleNotification;
 
 public class View_Score extends javax.swing.JPanel {
 
+    private Service_Score service;
+
     public View_Score() {
         initComponents();
+        this.service = new Service_Score();
         initScoreData();
+        initSearch();
+        addHint(txtSearch, "Id or name");
 
         txtIdStudent.setEditable(false);
         txtName.setEditable(false);
@@ -25,8 +36,7 @@ public class View_Score extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
         model.setRowCount(0);
 
-        Service_Score service = new Service_Score();
-        for (Model_Score s : service.getScoreData()) {
+        for (Model_Score s : this.service.getScoreData()) {
             model.addRow(new Object[]{
                 s.getIdStudent(),
                 s.getName(),
@@ -37,6 +47,47 @@ public class View_Score extends javax.swing.JPanel {
         }
     }
 
+    public void initSearch() {
+    txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            performLiveSearch();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            performLiveSearch();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            performLiveSearch();
+        }
+    });
+}
+    
+    private void performLiveSearch() {
+    String keyword = txtSearch.getText().trim();
+    if (keyword.equals("Id or name") || keyword.isEmpty()) {
+        initScoreData(); // Hiển thị lại toàn bộ nếu ô rỗng
+        return;
+    }
+
+    List<Model_Score> result = service.searchScore(keyword);
+    DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
+    model.setRowCount(0);
+
+    for (Model_Score s : result) {
+        model.addRow(new Object[]{
+            s.getIdStudent(),
+            s.getName(),
+            s.getEnglish(),
+            s.getComputer(),
+            s.getPhysical()
+        });
+    }
+}
+
     private void setColorByScore(JTextField field, float score) {
         if (score < 5.0f) {
             field.setForeground(Color.RED);
@@ -45,6 +96,29 @@ public class View_Score extends javax.swing.JPanel {
         } else {
             field.setForeground(new Color(0, 128, 0));
         }
+    }
+
+    private void addHint(JTextField field, String hint) {
+        field.setForeground(Color.GRAY);
+        field.setText(hint);
+
+        field.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (field.getText().equals(hint)) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (field.getText().isEmpty()) {
+                    field.setText(hint);
+                    field.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -124,14 +198,31 @@ public class View_Score extends javax.swing.JPanel {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnUpdate.setText("UPDATE");
         btnUpdate.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnRemove.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnRemove.setText("REMOVE");
         btnRemove.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
         btnSearch.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnSearch.setText("SEARCH");
         btnSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnRefresh.setText("REFRESH");
@@ -279,7 +370,7 @@ public class View_Score extends javax.swing.JPanel {
                             .addComponent(txtAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAverage))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -320,6 +411,93 @@ public class View_Score extends javax.swing.JPanel {
             setColorByScore(txtAverage, average);
         }
     }//GEN-LAST:event_tblScoreMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
+        int index = tblScore.getSelectedRow();
+
+        if (index == -1) {
+            HandleNotification.announceWarning("Cannot update student if not selected !");
+            return;
+        }
+
+        String idStudent = model.getValueAt(index, 0).toString();
+        String name = model.getValueAt(index, 1).toString();
+        String english = model.getValueAt(index, 2).toString();
+        String computer = model.getValueAt(index, 3).toString();
+        String physical = model.getValueAt(index, 4).toString();
+
+        SupScreen_UpdateScore updateForm = new SupScreen_UpdateScore(idStudent, name, english, computer, physical, this);
+        updateForm.setVisible(true);
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
+        int index = tblScore.getSelectedRow();
+
+        if (index == -1) {
+            HandleNotification.announceWarning("Cannot remove student if not selected !");
+            return;
+        }
+
+        String idStudent = model.getValueAt(index, 0).toString();
+        String name = model.getValueAt(index, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete score of student " + name + " ?", "Notification", JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_NO_OPTION) {
+            return;
+        }
+
+        boolean isName = false;
+        while (true) {
+            String inputName = JOptionPane.showInputDialog(this, "Please re-enter student name " + name + " to confirm");
+
+            if (inputName == null) {
+                return;
+            }
+
+            if (inputName.trim().equalsIgnoreCase(name)) {
+                isName = true;
+
+                Service_Score service = new Service_Score();
+                boolean deleted = service.deleteScoreById(idStudent);
+                if (deleted) {
+                    HandleNotification.announceInfo("Delete score of student " + name + " success!");
+                    initScoreData();
+                    break;
+                } else {
+                    HandleNotification.announceWarning("Delete score of student " + name + " failed!");
+                    break;
+                }
+            } else {
+                HandleNotification.announceWarning("Name does not match please re-enter");
+            }
+
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            HandleNotification.announceWarning("Please enter ID or Name to search.");
+            return;
+        }
+
+        List<Model_Score> result = new Service_Score().searchScore(keyword);
+        DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
+        model.setRowCount(0);
+
+        for (Model_Score s : result) {
+            model.addRow(new Object[]{
+                s.getIdStudent(),
+                s.getName(),
+                s.getEnglish(),
+                s.getComputer(),
+                s.getPhysical()
+            });
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

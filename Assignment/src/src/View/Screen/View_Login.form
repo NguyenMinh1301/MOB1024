@@ -43,6 +43,11 @@
                       </Group>
                       <EmptySpace pref="46" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="lblNameVersion" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
       </Group>
@@ -63,9 +68,11 @@
               <Component id="txtPassword" linkSize="7" min="-2" pref="47" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="btnLogin" linkSize="7" min="-2" pref="42" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Component id="btnRegister" min="-2" pref="42" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="lblNameVersion" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -161,6 +168,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNameVersion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Student Management (V 1.0.0)"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

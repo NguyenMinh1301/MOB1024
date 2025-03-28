@@ -4,7 +4,6 @@ GO
 USE QL_SINHVIEN;
 GO
 
--- Create table Students
 CREATE TABLE STUDENTS (
 	[IdStudent] NVARCHAR(50) PRIMARY KEY
   , [Name] NVARCHAR(50)
@@ -17,10 +16,8 @@ CREATE TABLE STUDENTS (
 
 GO
 
--- Create table Grade
 CREATE TABLE SCORES (
-	[Id] INT PRIMARY KEY IDENTITY
-  , [IdStudent] NVARCHAR(50)
+	[IdStudent] NVARCHAR(50) PRIMARY KEY
   , [English] INT
   , [Computer] INT
   , [Physical] INT
@@ -28,7 +25,6 @@ CREATE TABLE SCORES (
 
 GO
 
--- Create table user
 CREATE TABLE USERS (
 	[username] NVARCHAR(50) PRIMARY KEY
   , [password] NVARCHAR(255)
@@ -42,7 +38,6 @@ CREATE TABLE ROLES (
   , [rolename] NVARCHAR(50)
 )
 
--- Add constraint FK_IdStudent_Students
 ALTER TABLE SCORES
 ADD CONSTRAINT FK_IdStudent_STUDENTS
 FOREIGN KEY (IdStudent) REFERENCES STUDENTS(IdStudent)
@@ -50,8 +45,4 @@ FOREIGN KEY (IdStudent) REFERENCES STUDENTS(IdStudent)
 ALTER TABLE USERS
 ADD CONSTRAINT FK_roleid_ROLES
 FOREIGN KEY (roleid) REFERENCES ROLES(roleid)
-
-select * from users
-
-
 

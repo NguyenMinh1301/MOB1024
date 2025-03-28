@@ -1,8 +1,7 @@
 package src.Service;
 
-import static src.DAO.DAO_Notification.announceWarning;
-import static src.DAO.DAO_Notification.announceError;
-import static src.DAO.DAO_Notification.announceInfo;
+import static src.DAO.HandleNotification.announceWarning;
+import static src.DAO.HandleNotification.announceError;
 import src.DAO.DAO_Login;
 
 public class Service_Login implements DAO_Login{
@@ -33,7 +32,6 @@ public class Service_Login implements DAO_Login{
         return false;
     }
 
-    announceInfo("Login success !");
     return true;
 }
 }

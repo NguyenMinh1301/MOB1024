@@ -2,7 +2,7 @@ package src.DAO;
 
 import javax.swing.JOptionPane;
 
-public interface DAO_Notification {
+public interface HandleNotification {
     public static void announceError(String s) {
         JOptionPane.showMessageDialog(null, s, "Error", JOptionPane.ERROR_MESSAGE);
     }

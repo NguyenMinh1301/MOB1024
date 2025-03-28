@@ -1,14 +1,14 @@
 package src.View.Screen;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import src.DAO.DAO_Notification;
+import src.DAO.HandleNotification;
 
 public class View_Index extends javax.swing.JFrame {
 
     public static String currentAdmin;
     
     public View_Index() {
-        DAO_Notification.announceError("An error occurred, please log in again");
+        HandleNotification.announceError("An error occurred, please log in again");
         this.setVisible(false);
         View_Login lg = new View_Login();
         lg.setVisible(true);
@@ -59,10 +59,10 @@ public class View_Index extends javax.swing.JFrame {
         lblIconUser.setText("jLabel2");
 
         lblUserName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblUserName.setText("Username:");
+        lblUserName.setText("username:");
 
         lblRoll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblRoll.setText("Role:");
+        lblRoll.setText("role:");
 
         lblNameVersion.setText("Student Management (V 1.0.0)");
 

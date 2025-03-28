@@ -1,8 +1,8 @@
 package src.Service;
 
-import static src.DAO.DAO_Notification.announceWarning;
-import static src.DAO.DAO_Notification.announceError;
-import static src.DAO.DAO_Notification.announceInfo;
+import static src.DAO.HandleNotification.announceWarning;
+import static src.DAO.HandleNotification.announceError;
+import static src.DAO.HandleNotification.announceInfo;
 import src.DAO.DAO_Register;
 
 public class Service_Register implements DAO_Register {
