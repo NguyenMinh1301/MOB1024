@@ -2,6 +2,7 @@ package src.View.Screen;
 
 import java.util.List;
 import java.awt.Color;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -30,6 +31,14 @@ public class View_Score extends javax.swing.JPanel {
         txtComputer.setEditable(false);
         txtPhysical.setEditable(false);
         txtAverage.setEditable(false);
+        
+        addHoverEffect(btnAdd);
+        addHoverEffect(btnUpdate);
+        addHoverEffect(btnRemove);
+        addHoverEffect(btnSearch);
+        addHoverEffect(btnOption);
+        addHoverEffect(btnRefresh);
+        
     }
 
     public void initScoreData() {
@@ -121,6 +130,28 @@ public class View_Score extends javax.swing.JPanel {
         });
     }
 
+    public void addHoverEffect(JButton button) {
+        Color normal = button.getBackground();
+        Color hover = new Color(100, 149, 237);
+
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setFocusPainted(false);
+        button.setBackground(normal);
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(hover);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(normal);
+            }
+        });
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -370,7 +401,7 @@ public class View_Score extends javax.swing.JPanel {
                             .addComponent(txtAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAverage))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
                 .addContainerGap())
         );
 

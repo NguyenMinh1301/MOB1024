@@ -1,19 +1,29 @@
 package src.View.Screen;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import src.Model.Model_Students;
 import src.Service.Service_Student;
 import src.View.SupScreen.Student.SupScreen_AddStudent;
 import src.View.SupScreen.Student.SupScreen_DetailsStudent;
 import src.View.SupScreen.Student.SupScreen_UpdateStudent;
 import src.DAO.HandleNotification;
+import src.Service.Service_ExportHelper;
 
 public class View_Student extends javax.swing.JPanel {
 
@@ -24,7 +34,15 @@ public class View_Student extends javax.swing.JPanel {
         initStudentsData();
         addHint(txtSearch, "Id or name");
         initSearch();
-        
+
+        addHoverEffect(btnAdd);
+        addHoverEffect(btnUpdate);
+        addHoverEffect(btnRemove);
+        addHoverEffect(btnSearch);
+        addHoverEffect(btnExport);
+        addHoverEffect(btnDetails);
+        addHoverEffect(btnOption);
+        addHoverEffect(btnRefresh);
     }
 
     public void initStudentsData() {
@@ -67,7 +85,7 @@ public class View_Student extends javax.swing.JPanel {
                 if (keyword.equals("Id or name") || !txtSearch.hasFocus()) {
                     return;
                 }
-                
+
                 List<Model_Students> result = new Service_Student().searchStudent(keyword);
 
                 DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
@@ -112,6 +130,28 @@ public class View_Student extends javax.swing.JPanel {
         });
     }
 
+    public void addHoverEffect(JButton button) {
+        Color normal = button.getBackground();
+        Color hover = new Color(100, 149, 237);
+
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setFocusPainted(false);
+        button.setBackground(normal);
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(hover);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(normal);
+            }
+        });
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -126,7 +166,7 @@ public class View_Student extends javax.swing.JPanel {
         btnExport = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         btnDetails = new javax.swing.JButton();
-        btnRefresh1 = new javax.swing.JButton();
+        btnOption = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1037, 0));
 
@@ -233,9 +273,9 @@ public class View_Student extends javax.swing.JPanel {
             }
         });
 
-        btnRefresh1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        btnRefresh1.setText("OPTION");
-        btnRefresh1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnOption.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        btnOption.setText("OPTION");
+        btnOption.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -260,7 +300,7 @@ public class View_Student extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnOption, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -281,9 +321,9 @@ public class View_Student extends javax.swing.JPanel {
                     .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnOption, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -415,7 +455,11 @@ public class View_Student extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDetailsActionPerformed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-
+        try {
+            Service_ExportHelper.exportToCSV(tblStudents);
+        } catch (IOException ex) {
+            Logger.getLogger(View_Student.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnExportActionPerformed
 
 
@@ -423,8 +467,8 @@ public class View_Student extends javax.swing.JPanel {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDetails;
     private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnOption;
     private javax.swing.JButton btnRefresh;
-    private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;

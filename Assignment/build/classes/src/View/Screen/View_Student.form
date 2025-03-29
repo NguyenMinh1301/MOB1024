@@ -41,7 +41,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnDetails" min="-2" pref="122" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btnRefresh1" min="-2" pref="122" max="-2" attributes="0"/>
+                      <Component id="btnOption" min="-2" pref="122" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnRefresh" min="-2" pref="122" max="-2" attributes="0"/>
                   </Group>
@@ -68,10 +68,10 @@
                   <Component id="btnExport" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                   <Component id="btnRefresh" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                   <Component id="btnDetails" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="btnRefresh1" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="btnOption" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="274" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="423" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -271,7 +271,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDetailsActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnRefresh1">
+    <Component class="javax.swing.JButton" name="btnOption">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="20" style="0"/>

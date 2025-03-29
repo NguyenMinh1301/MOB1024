@@ -1,6 +1,8 @@
 package src.View.Screen;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
+import javax.swing.JButton;
 import src.DAO.HandleNotification;
 
 public class View_Index extends javax.swing.JFrame {
@@ -37,6 +39,28 @@ public class View_Index extends javax.swing.JFrame {
         panScreen.repaint();
     }
 
+    public void addHoverEffect(JButton button) {
+        Color normal = button.getBackground();
+        Color hover = new Color(100, 149, 237);
+
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setFocusPainted(false);
+        button.setBackground(normal);
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(hover);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(normal);
+            }
+        });
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
