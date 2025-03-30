@@ -1,29 +1,26 @@
 package src.View.Screen;
 
 import java.awt.Color;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import src.Model.Model_Students;
 import src.Service.Service_Student;
-import src.View.SupScreen.Student.SupScreen_AddStudent;
-import src.View.SupScreen.Student.SupScreen_DetailsStudent;
-import src.View.SupScreen.Student.SupScreen_UpdateStudent;
-import src.DAO.HandleNotification;
+import src.View.SupScreen.Student.SubScreen_AddStudent;
+import src.View.SupScreen.Student.SubScreen_DetailsStudent;
+import src.View.SupScreen.Student.SubScreen_UpdateStudent;
 import src.Service.Service_ExportHelper;
+import src.Service.Handle_Notification;
 
 public class View_Student extends javax.swing.JPanel {
 
@@ -130,24 +127,22 @@ public class View_Student extends javax.swing.JPanel {
         });
     }
 
-    public void addHoverEffect(JButton button) {
-        Color normal = button.getBackground();
-        Color hover = new Color(100, 149, 237);
+    public static void addHoverEffect(JButton btn) {
+        btn.putClientProperty("JButton.buttonType", "roundRect");
+        btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        btn.setFocusPainted(true);
 
-        button.setContentAreaFilled(true);
-        button.setOpaque(true);
-        button.setFocusPainted(false);
-        button.setBackground(normal);
-
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(hover);
+            public void mouseEntered(MouseEvent e) {
+                btn.setBackground(new Color(100, 149, 237));
+                btn.setOpaque(true);
             }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(normal);
+            public void mouseExited(MouseEvent e) {
+                btn.setBackground(null);
+                btn.setOpaque(false);
             }
         });
     }
@@ -204,13 +199,14 @@ public class View_Student extends javax.swing.JPanel {
             tblStudents.getColumnModel().getColumn(1).setPreferredWidth(170);
             tblStudents.getColumnModel().getColumn(2).setPreferredWidth(200);
             tblStudents.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tblStudents.getColumnModel().getColumn(4).setPreferredWidth(20);
+            tblStudents.getColumnModel().getColumn(4).setPreferredWidth(50);
             tblStudents.getColumnModel().getColumn(5).setPreferredWidth(150);
         }
 
         btnAdd.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnAdd.setText("ADD");
         btnAdd.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -220,6 +216,7 @@ public class View_Student extends javax.swing.JPanel {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnUpdate.setText("UPDATE");
         btnUpdate.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -229,6 +226,7 @@ public class View_Student extends javax.swing.JPanel {
         btnRemove.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnRemove.setText("REMOVE");
         btnRemove.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRemove.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveActionPerformed(evt);
@@ -238,6 +236,7 @@ public class View_Student extends javax.swing.JPanel {
         btnSearch.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnSearch.setText("SEARCH");
         btnSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -249,6 +248,7 @@ public class View_Student extends javax.swing.JPanel {
         btnExport.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnExport.setText("EXPORT");
         btnExport.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportActionPerformed(evt);
@@ -258,6 +258,7 @@ public class View_Student extends javax.swing.JPanel {
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnRefresh.setText("REFRESH");
         btnRefresh.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
@@ -267,6 +268,7 @@ public class View_Student extends javax.swing.JPanel {
         btnDetails.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnDetails.setText("DETAILS");
         btnDetails.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDetailsActionPerformed(evt);
@@ -276,6 +278,7 @@ public class View_Student extends javax.swing.JPanel {
         btnOption.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnOption.setText("OPTION");
         btnOption.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnOption.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -323,13 +326,13 @@ public class View_Student extends javax.swing.JPanel {
                     .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnOption, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        SupScreen_AddStudent add = new SupScreen_AddStudent(this);
+        SubScreen_AddStudent add = new SubScreen_AddStudent(this);
         add.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -338,7 +341,7 @@ public class View_Student extends javax.swing.JPanel {
         int index = tblStudents.getSelectedRow();
 
         if (index == -1) {
-            HandleNotification.announceWarning("Cannot update student if not selected !");
+            Handle_Notification.announceWarning("Cannot update student if not selected !");
             return;
         }
 
@@ -351,7 +354,7 @@ public class View_Student extends javax.swing.JPanel {
         String address = model.getValueAt(index, 5).toString();
         String avatar = model.getValueAt(index, 6).toString();
 
-        SupScreen_UpdateStudent updateForm = new SupScreen_UpdateStudent(id, name, email, phone, gender, address, avatar, this);
+        SubScreen_UpdateStudent updateForm = new SubScreen_UpdateStudent(id, name, email, phone, gender, address, avatar, this);
         updateForm.setVisible(true);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -360,7 +363,7 @@ public class View_Student extends javax.swing.JPanel {
         int index = tblStudents.getSelectedRow();
 
         if (index == -1) {
-            HandleNotification.announceWarning("Cannot remove student if not selected !");
+            Handle_Notification.announceWarning("Cannot remove student if not selected !");
             return;
         }
 
@@ -387,15 +390,15 @@ public class View_Student extends javax.swing.JPanel {
                 Service_Student service = new Service_Student();
                 boolean deleted = service.deleteStudentById(id);
                 if (deleted) {
-                    HandleNotification.announceInfo("Delete student " + name + " success!");
+                    Handle_Notification.announceInfo("Delete student " + name + " success!");
                     initStudentsData();
                     break;
                 } else {
-                    HandleNotification.announceWarning("Delete student " + name + " failed!");
+                    Handle_Notification.announceWarning("Delete student " + name + " failed!");
                     break;
                 }
             } else {
-                HandleNotification.announceWarning("Name does not match please re-enter");
+                Handle_Notification.announceWarning("Name does not match please re-enter");
             }
 
         }
@@ -406,7 +409,7 @@ public class View_Student extends javax.swing.JPanel {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String keyword = txtSearch.getText().trim();
         if (keyword.isEmpty()) {
-            HandleNotification.announceWarning("Please enter ID or Name to search.");
+            Handle_Notification.announceWarning("Please enter ID or Name to search.");
             return;
         }
 
@@ -437,7 +440,7 @@ public class View_Student extends javax.swing.JPanel {
         int index = tblStudents.getSelectedRow();
 
         if (index == -1) {
-            HandleNotification.announceWarning("Cannot remove student if not selected !");
+            Handle_Notification.announceWarning("Cannot remove student if not selected !");
             return;
         }
 
@@ -450,7 +453,7 @@ public class View_Student extends javax.swing.JPanel {
         String address = model.getValueAt(index, 5).toString();
         String avatar = model.getValueAt(index, 6).toString();
 
-        SupScreen_DetailsStudent detailsForm = new SupScreen_DetailsStudent(id, name, email, phone, gender, address, avatar, this);
+        SubScreen_DetailsStudent detailsForm = new SubScreen_DetailsStudent(id, name, email, phone, gender, address, avatar, this);
         detailsForm.setVisible(true);
     }//GEN-LAST:event_btnDetailsActionPerformed
 

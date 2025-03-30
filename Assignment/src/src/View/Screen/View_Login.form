@@ -171,7 +171,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblNameVersion">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Student Management (V 1.0.0)"/>
+        <Property name="text" type="java.lang.String" value="Student Management v1.0.0"/>
       </Properties>
     </Component>
   </SubComponents>

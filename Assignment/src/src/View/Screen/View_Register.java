@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
 import src.Service.Service_Register;
-import src.DAO.HandleNotification;
+import src.Service.Handle_Notification;
 
 public class View_Register extends javax.swing.JFrame {
 
@@ -13,10 +13,10 @@ public class View_Register extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Student management V 1.0.1");
-        
+
         addHint(txtUsername, "Username");
         addHint(txtPassword, "Password");
-        addHint(txtConfirmPassword, "Confirm password");
+        addHint(txtConfirmPassword, "Password");
     }
 
     public void submit() {
@@ -24,18 +24,16 @@ public class View_Register extends javax.swing.JFrame {
         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
         String confirmPass = String.valueOf(txtConfirmPassword.getPassword());
-        
-        if (user.equals("Username") || pass.equals("Password") || pass.equals("Confirm password")) {
-            HandleNotification.announceWarning("Please enter your account and password");
+
+        if (user.equals("Username") || pass.equals("Password") || pass.equals("Password")) {
+            Handle_Notification.announceWarning("Please enter your account and password");
             return;
         }
-        
-        
+
         boolean b = service.register(user, pass, confirmPass);
         if (b == false) {
             return;
         } else if (b == true) {
-            HandleNotification.announceInfo("Registration successful!");
             View_Login login = new View_Login();
             this.dispose();
             login.setVisible(true);
@@ -64,7 +62,7 @@ public class View_Register extends javax.swing.JFrame {
             }
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -210,19 +208,19 @@ public class View_Register extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtPasswordKeyReleased
 
     private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtUsernameKeyReleased
 
     private void txtConfirmPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfirmPasswordKeyReleased
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtConfirmPasswordKeyReleased

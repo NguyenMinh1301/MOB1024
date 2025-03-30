@@ -3,16 +3,10 @@ package src.View.Screen;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.TableModel;
+import src.Model.Model_User;
 import src.Service.Service_Login;
-import src.DAO.HandleNotification;
+import src.Service.Handle_Notification;
 
 public class View_Login extends javax.swing.JFrame {
 
@@ -20,30 +14,26 @@ public class View_Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setTitle("Student management V 1.0.0");
+        this.setTitle("Student management (v1.0.0)");
 
         addHint(txtUsername, "Username");
         addHint(txtPassword, "Password");
     }
 
     public void submit() {
-        String user = txtUsername.getText();
-        String pass = String.valueOf(txtPassword.getPassword());
+        String username = txtUsername.getText().trim();
+        String password = String.valueOf(txtPassword.getPassword()).trim();
 
-        if (user.equals("Username") || pass.equals("Password")) {
-            HandleNotification.announceWarning("Please enter your account and password");
+        if (username.equals("Username") || password.equals("Password")) {
+            Handle_Notification.announceWarning("Please enter your account and password");
             return;
         }
 
         Service_Login service = new Service_Login();
-        boolean b = service.checkLogin(user, pass);
-
-        if (b == false) {
-            return;
-        } else if (b == true) {
-            View_Index index = new View_Index(user);
-            this.dispose();
-            index.setVisible(true);
+        Model_User user = service.loginCheck(username, password);
+        if (user != null) {
+            new grpTheme(user).setVisible(true);
+            dispose();
         }
     }
 
@@ -70,39 +60,6 @@ public class View_Login extends javax.swing.JFrame {
         });
     }
 
-    
-    
-    public static void exportToCSV(JTable table) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream("src/student-list.csv");
-             OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-             BufferedWriter csvWriter = new BufferedWriter(writer)) {
-
-            fos.write(0xEF);
-            fos.write(0xBB);
-            fos.write(0xBF);
-
-            TableModel model = table.getModel();
-
-            for (int i = 0; i < model.getColumnCount(); i++) {
-                csvWriter.write("\"" + model.getColumnName(i) + "\"");
-                if (i < model.getColumnCount() - 1) csvWriter.write(",");
-            }
-            csvWriter.newLine();
-
-            for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    Object value = model.getValueAt(i, j);
-                    csvWriter.write("\"" + (value != null ? value.toString() : "") + "\"");
-                    if (j < model.getColumnCount() - 1) csvWriter.write(",");
-                }
-                csvWriter.newLine();
-            }
-
-            csvWriter.flush();
-            HandleNotification.announceInfo("Exported CSV successfully (with UTF-8 support)!");
-        }
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -166,7 +123,7 @@ public class View_Login extends javax.swing.JFrame {
             }
         });
 
-        lblNameVersion.setText("Student Management (V 1.0.0)");
+        lblNameVersion.setText("Student Management v1.0.0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

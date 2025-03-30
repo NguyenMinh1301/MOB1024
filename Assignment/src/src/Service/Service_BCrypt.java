@@ -7,7 +7,7 @@ public class Service_BCrypt {
     public class BCryptUtils {
 
         public static String hashPassword(String plainPassword) {
-            return BCrypt.hashpw(plainPassword, BCrypt.gensalt(16));
+            return BCrypt.hashpw(plainPassword, BCrypt.gensalt(8));
         }
 
         public static boolean checkPassword(String plainPassword, String hashedPassword) {

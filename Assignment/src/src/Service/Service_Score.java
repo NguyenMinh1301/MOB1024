@@ -3,7 +3,7 @@ package src.Service;
 import java.util.List;
 import src.DAO.DAO_Score;
 import src.Model.Model_Score;
-import src.DAO.HandleNotification;
+import src.Service.Handle_Notification;
 
 public class Service_Score implements DAO_Score {
 
@@ -20,27 +20,27 @@ public class Service_Score implements DAO_Score {
 
         try {
             if (idStudent.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>ID</b></html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>ID</b> score</html>");
                 return b;
             }
 
             if (name.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>ID</b></html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>Name</b> score</html>");
                 return b;
             }
 
             if (english.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>ID</b></html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>English</b> score</html>");
                 return b;
             }
 
             if (computer.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>ID</b></html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>Computer</b> score</html>");
                 return b;
             }
 
             if (physical.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>ID</b></html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>Physical</b> score</html>");
                 return b;
             }
 
@@ -48,36 +48,36 @@ public class Service_Score implements DAO_Score {
             try {
                 englishFloat = Float.parseFloat(english);
             } catch (Exception ex) {
-                HandleNotification.announceWarning("<html>English score must be a <b>number</b></html>");
+                Handle_Notification.announceWarning("<html>English score must be a <b>number</b></html>");
                 return b;
             }
 
             try {
                 computerFloat = Float.parseFloat(computer);
             } catch (Exception ex) {
-                HandleNotification.announceWarning("<html>Computer score must be a <b>number</b></html>");
+                Handle_Notification.announceWarning("<html>Computer score must be a <b>number</b></html>");
                 return b;
             }
 
             try {
                 physicalFloat = Float.parseFloat(physical);
             } catch (Exception ex) {
-                HandleNotification.announceWarning("<html>Physical score must be a <b>number</b></html>");
+                Handle_Notification.announceWarning("<html>Physical score must be a <b>number</b></html>");
                 return b;
             }
 
             if (englishFloat < 0 || englishFloat > 10) {
-                HandleNotification.announceWarning("<html>English score must be <b>between 1 - 10</b></html>");
+                Handle_Notification.announceWarning("<html>English score must be <b>between 1 - 10</b></html>");
                 return b;
             }
 
             if (computerFloat < 0 || computerFloat > 10) {
-                HandleNotification.announceWarning("<html>Computer score must be <b>between 1 - 10</b></html>");
+                Handle_Notification.announceWarning("<html>Computer score must be <b>between 1 - 10</b></html>");
                 return b;
             }
 
             if (physicalFloat < 0 || physicalFloat > 10) {
-                HandleNotification.announceWarning("<html>Physical score must be <b>between 1 - 10</b></html>");
+                Handle_Notification.announceWarning("<html>Physical score must be <b>between 1 - 10</b></html>");
                 return b;
             }
 
@@ -86,7 +86,7 @@ public class Service_Score implements DAO_Score {
             }
 
         } catch (Exception ex) {
-            HandleNotification.announceError("An unknown error occurred!");
+            Handle_Notification.announceError("An unknown error occurred!");
         }
 
         return b;
@@ -96,17 +96,17 @@ public class Service_Score implements DAO_Score {
         boolean b = false;
         try {
             if (english.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>English</b> score</html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>English</b> score</html>");
                 return b;
             }
 
             if (computer.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>Computer</b> score</html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>Computer</b> score</html>");
                 return b;
             }
 
             if (physical.length() <= 0) {
-                HandleNotification.announceWarning("<html>You have not entered <b>Physical</b> score</html>");
+                Handle_Notification.announceWarning("<html>You have not entered <b>Physical</b> score</html>");
                 return b;
             }
 
@@ -114,36 +114,36 @@ public class Service_Score implements DAO_Score {
             try {
                 englishFloat = Float.parseFloat(english);
             } catch (Exception ex) {
-                HandleNotification.announceWarning("<html>English score must be a <b>number</b></html>");
+                Handle_Notification.announceWarning("<html>English score must be a <b>number</b></html>");
                 return b;
             }
 
             try {
                 computerFloat = Float.parseFloat(computer);
             } catch (Exception ex) {
-                HandleNotification.announceWarning("<html>Computer score must be a <b>number</b></html>");
+                Handle_Notification.announceWarning("<html>Computer score must be a <b>number</b></html>");
                 return b;
             }
 
             try {
                 physicalFloat = Float.parseFloat(physical);
             } catch (Exception ex) {
-                HandleNotification.announceWarning("<html>Physical score must be a <b>number</b></html>");
+                Handle_Notification.announceWarning("<html>Physical score must be a <b>number</b></html>");
                 return b;
             }
 
             if (englishFloat < 0 || englishFloat > 10) {
-                HandleNotification.announceWarning("<html>English score must be <b>between 1 - 10</b></html>");
+                Handle_Notification.announceWarning("<html>English score must be <b>between 1 - 10</b></html>");
                 return b;
             }
 
             if (computerFloat < 0 || computerFloat > 10) {
-                HandleNotification.announceWarning("<html>Computer score must be <b>between 1 - 10</b></html>");
+                Handle_Notification.announceWarning("<html>Computer score must be <b>between 1 - 10</b></html>");
                 return b;
             }
 
             if (physicalFloat < 0 || physicalFloat > 10) {
-                HandleNotification.announceWarning("<html>Physical score must be <b>between 1 - 10</b></html>");
+                Handle_Notification.announceWarning("<html>Physical score must be <b>between 1 - 10</b></html>");
                 return b;
             }
 
@@ -151,7 +151,7 @@ public class Service_Score implements DAO_Score {
                 b = true;
             }
         } catch (Exception ex) {
-            HandleNotification.announceError("An unknown error occurred!");
+            Handle_Notification.announceError("An unknown error occurred!");
         }
         return b;
     }

@@ -1,6 +1,7 @@
 package src.Model;
 
 public class Model_Students {
+
     private String id;
     private String name;
     private String email;
@@ -11,7 +12,7 @@ public class Model_Students {
 
     public Model_Students() {
     }
-    
+
     public Model_Students(String id, String name, String email, String phone, boolean gender, String address, String avatar) {
         this.id = id;
         this.name = name;
@@ -77,6 +78,5 @@ public class Model_Students {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-    
-    
+
 }

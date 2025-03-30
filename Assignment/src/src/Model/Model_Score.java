@@ -1,6 +1,7 @@
 package src.Model;
 
 public class Model_Score {
+
     private String idStudent;
     private String name;
     private float english;

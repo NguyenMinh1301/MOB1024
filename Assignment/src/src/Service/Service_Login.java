@@ -1,37 +1,40 @@
 package src.Service;
 
-import static src.DAO.HandleNotification.announceWarning;
-import static src.DAO.HandleNotification.announceError;
+import static src.Service.Handle_Notification.announceWarning;
+import static src.Service.Handle_Notification.announceError;
 import src.DAO.DAO_Login;
+import src.Model.Model_User;
 
-public class Service_Login implements DAO_Login{
-    public boolean checkLogin(String name, String pass) {
-    if (name.length() <= 0) {
-        announceWarning("You have not entered Username !");
-        return false;
+public class Service_Login implements DAO_Login {
+    
+    public Model_User loginCheck(String username, String password) {
+        Model_User user = getUserByUsernameFull(username);
+        if (username.length() <= 0) {
+            announceWarning("You have not entered Username !");
+            return null;
+        }
+
+        if (password.length() <= 0) {
+            announceWarning("You have not entered Password !");
+            return null;
+        }
+
+        if (!isExistUser(username)) {
+            announceWarning("<html>Wrong <b>Username</b> or <b>Password</b> !</html>");
+            return null;
+        }
+
+        String hashed = getHashedPasswordByUsername(username);
+        if (hashed == null) {
+            announceError("Unable to retrieve password from system.");
+            return null;
+        }
+
+        if (!Service_BCrypt.BCryptUtils.checkPassword(password, hashed)) {
+            announceWarning("<html>Wrong <b>Username</b> or <b>Password</b> !</html>");
+            return null;
+        }
+
+        return user;
     }
-
-    if (pass.length() <= 0) {
-        announceWarning("You have not entered Password !");
-        return false;
-    }
-
-    if (!isExistUser(name)) {
-        announceWarning("Account does not exist !");
-        return false;
-    }
-
-    String hashed = getHashedPasswordByUsername(name);
-    if (hashed == null) {
-        announceError("Unable to retrieve password from system.");
-        return false;
-    }
-
-    if (!Service_BCrypt.BCryptUtils.checkPassword(pass, hashed)) {
-        announceWarning("Wrong password !");
-        return false;
-    }
-
-    return true;
-}
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import src.Connection.Connection_ConnectorHelper;
 import src.Model.Model_Score;
-import static src.DAO.HandleException.HandleException;
+import static src.Service.Handle_Exception.HandleException;
 
 public interface DAO_Score {
 
@@ -46,7 +46,6 @@ public interface DAO_Score {
             prstm.setFloat(4, physical);
             prstm.executeUpdate();
             check = 1;
-            HandleNotification.announceInfo("<html>Successfully added score for student <u>" + name + "</u> !</html>");
             return check;
         } catch (SQLException ex) {
             HandleException(ex);
@@ -65,7 +64,6 @@ public interface DAO_Score {
 
             int rows = prstm.executeUpdate();
             if (rows > 0) {
-                HandleNotification.announceInfo("<html>Successfully updated score for student <u>" + name + "</u> !</html>");
                 return true;
             }
         } catch (SQLException ex) {
