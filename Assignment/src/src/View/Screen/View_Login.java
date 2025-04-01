@@ -32,7 +32,7 @@ public class View_Login extends javax.swing.JFrame {
         Service_Login service = new Service_Login();
         Model_User user = service.loginCheck(username, password);
         if (user != null) {
-            new grpTheme(user).setVisible(true);
+            new View_Index(user).setVisible(true);
             dispose();
         }
     }

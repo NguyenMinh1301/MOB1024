@@ -111,7 +111,6 @@ INSERT INTO SCORES ([IdStudent], [English], [Computer], [Physical]) VALUES ('TV0
 INSERT INTO SCORES ([IdStudent], [English], [Computer], [Physical]) VALUES ('TV00050', 5.0, 7.5, 6.0);
 
 
-
 INSERT INTO ROLES ([roleid], [rolename]) VALUES 
 	(1, N'Admin'),
 	(2, N'Teacher'),
@@ -119,4 +118,4 @@ INSERT INTO ROLES ([roleid], [rolename]) VALUES
 
 
 INSERT INTO USERS ([username], [password], [roleid]) VALUES
-	('minh', '123', '1');
+	('admin', '$2a$08$ARtGla6A4lUbyYzIifJjUepCZnZ4TBXUbxaGsZ.xqGGYF//Zdlje6', '1'); -- Pass: 123

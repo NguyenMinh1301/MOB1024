@@ -66,7 +66,7 @@ public interface DAO_Students {
 
     default List<Model_Students> getAllStudentWithIdAndName() {
         List<Model_Students> studentsList = new ArrayList<>();
-        String SQL = "SELECT IdStudent, Name FROM STUDENTS;";
+        String SQL = "SELECT s.IdStudent, s.Name FROM STUDENTS s LEFT JOIN SCORES sc on s.IdStudent = sc.IdStudent WHERE sc.IdStudent IS NULL;";
 
         try (
                 Connection conn = Connection_ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL);) {

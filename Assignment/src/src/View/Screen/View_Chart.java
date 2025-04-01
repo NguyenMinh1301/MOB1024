@@ -2,9 +2,12 @@ package src.View.Screen;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import src.DAO.DAO_Chart;
 import org.jfree.chart.ChartFactory;
@@ -111,24 +114,22 @@ public class View_Chart extends javax.swing.JPanel {
         return createPieChartPanel("AVERAGE SCORE", data);
     }
 
-    public void addHoverEffect(JButton button) {
-        Color normal = button.getBackground();
-        Color hover = new Color(100, 149, 237);
+    public static void addHoverEffect(JButton btn) {
+        btn.putClientProperty("JButton.buttonType", "roundRect");
+        btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        btn.setFocusPainted(true);
 
-        button.setContentAreaFilled(true);
-        button.setOpaque(true);
-        button.setFocusPainted(false);
-        button.setBackground(normal);
-
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(hover);
+            public void mouseEntered(MouseEvent e) {
+                btn.setBackground(new Color(100, 149, 237));
+                btn.setOpaque(true);
             }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(normal);
+            public void mouseExited(MouseEvent e) {
+                btn.setBackground(null);
+                btn.setOpaque(false);
             }
         });
     }
