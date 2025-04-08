@@ -9,13 +9,22 @@ import java.util.List;
 import src.Connection.Connection_ConnectorHelper;
 import static src.Service.Handle_Exception.HandleException;
 
+/*
+    Lớp Data Access Object dùng để giao tiếp với Database
+    Sử dụng interface để các lớp khác implement (sử dụng default method mà không cần override)
+ */
+
 public interface DAO_Chart {
 
     default List<String> getGenderList() {
         List<String> list = new ArrayList<>();
         String SQL = "SELECT Gender FROM STUDENTS;";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 boolean gender = rs.getBoolean("Gender");
                 list.add(gender ? "Female" : "Male");
@@ -30,7 +39,11 @@ public interface DAO_Chart {
         List<String> list = new ArrayList<>();
         String SQL = "SELECT Address FROM STUDENTS;";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 String address = rs.getString("Address");
                 list.add(address != null ? address.trim() : "Không rõ");
@@ -45,7 +58,11 @@ public interface DAO_Chart {
         List<String> list = new ArrayList<>();
         String SQL = "SELECT ENGLISH FROM SCORES";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 float score = rs.getFloat("ENGLISH");
                 list.add(String.format("%.1f", score));
@@ -60,7 +77,11 @@ public interface DAO_Chart {
         List<String> list = new ArrayList<>();
         String SQL = "SELECT COMPUTER FROM SCORES";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 float score = rs.getFloat("COMPUTER");
                 list.add(String.format("%.1f", score));
@@ -75,7 +96,11 @@ public interface DAO_Chart {
         List<String> list = new ArrayList<>();
         String SQL = "SELECT PHYSICAL FROM SCORES";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 float score = rs.getFloat("PHYSICAL");
                 list.add(String.format("%.1f", score));
@@ -90,7 +115,11 @@ public interface DAO_Chart {
         List<String> list = new ArrayList<>();
         String SQL = "SELECT (English + Computer + Physical)/3.0 AS AVG FROM SCORES";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 float avg = rs.getFloat("AVG");
                 list.add(classifyScore(avg));
@@ -101,6 +130,7 @@ public interface DAO_Chart {
         return list;
     }
 
+    //Lấy học lực dựa vào điểm
     private String classifyScore(float score) {
         if (score < 5) {
             return "Weak (<5)";

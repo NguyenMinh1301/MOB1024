@@ -28,41 +28,61 @@ public class View_Chart extends javax.swing.JPanel {
         addHoverEffect(btnPhysical);
         addHoverEffect(btnAverage);
     }
-
+    
+    //Tạo chart
     private ChartPanel createPieChartPanel(String title, List<String> rawData) {
+        //Map để đếm số lượng từng giá trị xuất hiện trong danh sách
         Map<String, Integer> countMap = new HashMap<>();
+        //Dùng for-each để duyệt qua toàn bộ danh sách
         for (String item : rawData) {
+            //Nếu gặp item = null thì thay bằng Unknown
             item = item == null ? "Unknown" : item.trim();
+            //Đếm số lần xuất hiện của từng mục
             countMap.put(item, countMap.getOrDefault(item, 0) + 1);
         }
 
-        DefaultPieDataset dataset = new DefaultPieDataset();
+        //Tạo dataset và tính tổng số lượng tất cả các mục để tính phần trăm
+        DefaultPieDataset dataset = new DefaultPieDataset(); 
         int total = countMap.values().stream().mapToInt(i -> i).sum();
 
+        //Tính phần trăm của từng loại dữ liệu sau đó đưa vào dưới dạng (Tên (xx.x%))
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            //Tính phần trăm và lưu vào biến
             double percent = (double) entry.getValue() / total * 100;
             dataset.setValue(entry.getKey() + " (" + String.format("%.1f", percent) + "%)", percent);
         }
-
+        
+        //Điều chỉnh giao diện của chart pie
         JFreeChart chart = ChartFactory.createPieChart(title, dataset, false, true, false);
+        //Tạo biểu đồ tròn và lấy plot để tuỳ chỉnh giao diện
         PiePlot plot = (PiePlot) chart.getPlot();
+        //Nền trong suốt
         plot.setBackgroundPaint(panChart.getBackground());
+        //Ẩn viền
         plot.setOutlineVisible(false);
+        //Font chữ
         plot.setLabelFont(new Font("Segoe UI", Font.PLAIN, 20));
+        //Bỏ hiệu ứng bóng
         plot.setLabelBackgroundPaint(new Color(0, 0, 0, 0));
         plot.setLabelOutlinePaint(null);
         plot.setLabelShadowPaint(null);
         plot.setShadowPaint(null);
-
+        
+        //Tạo một ChartPanel để chứa biểu đồ chart
         ChartPanel panel = new ChartPanel(chart);
+        //Tắt nền của chart
         panel.setOpaque(false);
+        //Lấy màu nền của panel chứa chart
         panel.setBackground(panChart.getBackground());
+        //Xoá viền của chart
         panel.setBorder(null);
+        //Cho phép xoay chart
         panel.setMouseWheelEnabled(true);
 
         return panel;
     }
 
+    //Xoá biểu đồ cũ hiện có và đưa biểu đồ mới lên panel và cập nhật lại giao diện
     private void showChart(ChartPanel panel) {
         panChart.removeAll();
         panel.setPreferredSize(panChart.getSize());
@@ -71,7 +91,8 @@ public class View_Chart extends javax.swing.JPanel {
         panChart.revalidate();
         panChart.repaint();
     }
-
+    
+    //Truy xuất dữ liệu từ DAO sau đó truyền dữ liệu vào danh sách và gọi hàm tạo chart
     private ChartPanel createGenderChartPanel() {
         DAO_Chart dao = new DAO_Chart() {
         };
@@ -114,11 +135,12 @@ public class View_Chart extends javax.swing.JPanel {
         return createPieChartPanel("AVERAGE SCORE", data);
     }
 
+    //Tạo hiệu ứng hover khi đưa chuột vào button
     public static void addHoverEffect(JButton btn) {
         btn.putClientProperty("JButton.buttonType", "roundRect");
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         btn.setFocusPainted(true);
-
+        
         btn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -133,7 +155,7 @@ public class View_Chart extends javax.swing.JPanel {
             }
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

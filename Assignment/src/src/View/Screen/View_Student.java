@@ -28,20 +28,24 @@ public class View_Student extends javax.swing.JPanel {
 
     public View_Student() {
         initComponents();
+        //Add giữ liệu Student vào bảng
         initStudentsData();
+        //Add hint cho txtField tìm kiếm
         addHint(txtSearch, "Id or name");
+        //Listener cho phép tìm kiếm theo thời gian thực
         initSearch();
-
+        
+        //Khởi tạo hiệu ứng hover cho từng nút
         addHoverEffect(btnAdd);
         addHoverEffect(btnUpdate);
         addHoverEffect(btnRemove);
         addHoverEffect(btnSearch);
         addHoverEffect(btnExport);
         addHoverEffect(btnDetails);
-        addHoverEffect(btnOption);
         addHoverEffect(btnRefresh);
     }
-
+    
+    //Lấy dữ liệu từ database sau đó xuất lên table
     public void initStudentsData() {
         this.service = new Service_Student();
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
@@ -59,35 +63,46 @@ public class View_Student extends javax.swing.JPanel {
         }
         this.tblStudents.setModel(model);
     }
-
+    
+    //Listener để tìm kiếm ngay khi có sự thay đổi trong txtField người dùng nhập
     public void initSearch() {
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            
+            //Người dùng nhập thêm chữ
             @Override
             public void insertUpdate(DocumentEvent e) {
                 performLiveSearch();
             }
-
+            
+            //Người dùng xoá chữ
             @Override
             public void removeUpdate(DocumentEvent e) {
                 performLiveSearch();
             }
-
+            
+            //Người dùng sửa chữ
             @Override
             public void changedUpdate(DocumentEvent e) {
                 performLiveSearch();
             }
 
+            //Hàm nội bộ dùng để tìm kiếm
             private void performLiveSearch() {
+                //Lấy keyword từ txtField người dùng nhập
                 String keyword = txtSearch.getText().trim();
+                //Tránh tìm kiếm trùng với hint trên txtField
                 if (keyword.equals("Id or name") || !txtSearch.hasFocus()) {
                     return;
                 }
-
+                
+                //Gọi DAO thông qua service để tìm kiếm tên hoặc id. Nếu có tồn tại tên hoặc id trùng với keyword lưu vào danh sách
                 List<Model_Students> result = new Service_Student().searchStudent(keyword);
-
+                
+                //Xoá danh sách cũ đang có
                 DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
                 model.setRowCount(0);
-
+                
+                //Add dữ liệu trong danh sách mới vào bảng
                 for (Model_Students s : result) {
                     model.addRow(new Object[]{
                         s.getId(),
@@ -103,7 +118,8 @@ public class View_Student extends javax.swing.JPanel {
         });
 
     }
-
+    
+    //Tạo hint cho textField
     private void addHint(JTextField field, String hint) {
         field.setForeground(Color.GRAY);
         field.setText(hint);
@@ -126,7 +142,8 @@ public class View_Student extends javax.swing.JPanel {
             }
         });
     }
-
+    
+    //Tạo hiệu ứng hover cho button
     public static void addHoverEffect(JButton btn) {
         btn.putClientProperty("JButton.buttonType", "roundRect");
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -161,7 +178,6 @@ public class View_Student extends javax.swing.JPanel {
         btnExport = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         btnDetails = new javax.swing.JButton();
-        btnOption = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1037, 0));
 
@@ -275,11 +291,6 @@ public class View_Student extends javax.swing.JPanel {
             }
         });
 
-        btnOption.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        btnOption.setText("OPTION");
-        btnOption.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnOption.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -303,8 +314,6 @@ public class View_Student extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnOption, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -323,28 +332,31 @@ public class View_Student extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOption, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        //Gọi cửa sổ add lên màn hình
         SubScreen_AddStudent add = new SubScreen_AddStudent(this);
         add.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        //Lấy địa chỉ dòng người dùng đang chọn
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
         int index = tblStudents.getSelectedRow();
 
+        //Nếu người dùng không chọn sinh viên update báo lỗi và huỷ thao tác
         if (index == -1) {
             Handle_Notification.announceWarning("Cannot update student if not selected !");
             return;
         }
 
+        //Lấy thông tin trước khi update của sinh viên
         String id = model.getValueAt(index, 0).toString();
         String name = model.getValueAt(index, 1).toString();
         String email = model.getValueAt(index, 2).toString();
@@ -354,14 +366,17 @@ public class View_Student extends javax.swing.JPanel {
         String address = model.getValueAt(index, 5).toString();
         String avatar = model.getValueAt(index, 6).toString();
 
+        //Gọi cửa sổ update và truyền dữ liệu của sinh viên
         SubScreen_UpdateStudent updateForm = new SubScreen_UpdateStudent(id, name, email, phone, gender, address, avatar, this);
         updateForm.setVisible(true);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        //Lấy vị trí người dùng chọn
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
         int index = tblStudents.getSelectedRow();
 
+        //Nếu người dùng không chọn sinh viên remove báo lỗi và huỷ thao tác
         if (index == -1) {
             Handle_Notification.announceWarning("Cannot remove student if not selected !");
             return;
@@ -376,6 +391,7 @@ public class View_Student extends javax.swing.JPanel {
             return;
         }
 
+        //Mời người dùng nhập lại tên của sinh viên nếu nhập đúng mới thực hiện xoá
         boolean isName = false;
         while (true) {
             String inputName = JOptionPane.showInputDialog(this, "Please re-enter student name " + name + " to confirm");
@@ -407,9 +423,10 @@ public class View_Student extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        //Tìm kiếm theo id hoặc name
         String keyword = txtSearch.getText().trim();
-        if (keyword.isEmpty()) {
-            Handle_Notification.announceWarning("Please enter ID or Name to search.");
+        if (keyword.equals("Id or name") || keyword.isEmpty()) {
+            initStudentsData();
             return;
         }
 
@@ -432,18 +449,22 @@ public class View_Student extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        //Gọi lại hàm xuất data lên table
         initStudentsData();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsActionPerformed
+        //Lấy vị trí người dùng chọn
         DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
         int index = tblStudents.getSelectedRow();
 
+        //Nếu người dùng không chọn sinh viên remove báo lỗi và huỷ thao tác
         if (index == -1) {
             Handle_Notification.announceWarning("Cannot show details student if not selected !");
             return;
         }
-
+        
+        //Lấy dữ liệu của sinh viên
         String id = model.getValueAt(index, 0).toString();
         String name = model.getValueAt(index, 1).toString();
         String email = model.getValueAt(index, 2).toString();
@@ -452,12 +473,14 @@ public class View_Student extends javax.swing.JPanel {
         boolean gender = genderStr.equalsIgnoreCase("Male");
         String address = model.getValueAt(index, 5).toString();
         String avatar = model.getValueAt(index, 6).toString();
-
+        
+        //Gọi cửa sổ Details lên màn hình
         SubScreen_DetailsStudent detailsForm = new SubScreen_DetailsStudent(id, name, email, phone, gender, address, avatar, this);
         detailsForm.setVisible(true);
     }//GEN-LAST:event_btnDetailsActionPerformed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        //Gọi service Export ra file excel
         try {
             Service_ExportHelper.exportToCSV(tblStudents);
         } catch (IOException ex) {
@@ -470,7 +493,6 @@ public class View_Student extends javax.swing.JPanel {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDetails;
     private javax.swing.JButton btnExport;
-    private javax.swing.JButton btnOption;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSearch;

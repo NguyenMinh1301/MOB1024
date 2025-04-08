@@ -5,6 +5,13 @@ import static src.Service.Handle_Notification.announceError;
 import static src.Service.Handle_Notification.announceInfo;
 import src.DAO.DAO_Register;
 
+/*
+    Lớp Service_Register implements lớp DAO_Register
+    Kiểm tra người dùng đã nhập đủ thông tin yêu cầu hay chưa
+    Kiểm tra username có tồn tại trong database hay không
+    Cấp quyền cho user mới
+*/
+
 public class Service_Register implements DAO_Register {
 
     public boolean register(String username, String password, String confirmPassword) {
@@ -35,7 +42,7 @@ public class Service_Register implements DAO_Register {
             return b;
         }
 
-        String hashedPassword = Service_BCrypt.BCryptUtils.hashPassword(password);
+        String hashedPassword = Service_BCrypt.hashPassword(password);
 
         int roleId = getRoleIdByName("User");
         if (roleId == -1) {

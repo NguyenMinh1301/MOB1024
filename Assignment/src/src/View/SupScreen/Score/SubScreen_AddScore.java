@@ -275,7 +275,7 @@ public class SubScreen_AddScore extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panTableStudents.setBorder(javax.swing.BorderFactory.createTitledBorder("TABLE STUDENTS"));
+        panTableStudents.setBorder(javax.swing.BorderFactory.createTitledBorder("STUDENTS DONT HAVE SCORE"));
 
         tblStudents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -16,27 +16,34 @@ public class View_Login extends javax.swing.JFrame {
         this.setResizable(false);
         this.setTitle("Student management (v1.0.0)");
 
+        //Tạo hint cho txtField
         addHint(txtUsername, "Username");
         addHint(txtPassword, "Password");
     }
 
     public void submit() {
+        //Lấy username và password người dùng nhập
         String username = txtUsername.getText().trim();
         String password = String.valueOf(txtPassword.getPassword()).trim();
 
+        //Vì hint cũng là kí tự nhận dạng được nên nếu bấm nút Login mà không nhập gì trương trình vẫn nhận username và password
         if (username.equals("Username") || password.equals("Password")) {
+            //Nếu username và password trùng với hint báo lỗi
             Handle_Notification.announceWarning("Please enter your account and password");
             return;
         }
-
+        
+        //Gọi service để kiểm tra nhập liệu và tài khoản và mât khẩu có sai hay không hoặc có tồn tại không
         Service_Login service = new Service_Login();
         Model_User user = service.loginCheck(username, password);
+        //Nếu có tồn tại và đúng username và password hiện màn hình Index và tắt màn hình Login
         if (user != null) {
             new View_Index(user).setVisible(true);
             dispose();
         }
     }
-
+    
+    //Tạo hint cho textField
     private void addHint(JTextField field, String hint) {
         field.setForeground(Color.GRAY);
         field.setText(hint);
@@ -184,27 +191,35 @@ public class View_Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        //Gọi hàm kiểm tra mật khẩu đầu vào
         submit();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+        //Nếu người dùng bấm Enter tự động gọi submit()
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtPasswordKeyReleased
 
     private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
+        //Nếu người dùng bấm Enter tự động gọi submit()
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtUsernameKeyReleased
 
+    //Gọi màn hình Register nếu người dùng bấm nút
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        View_Register index = new View_Register();
+        View_Register register = new View_Register();
+        //Tắt màn Login
         this.dispose();
-        index.setVisible(true);
+        //Gọi màn Register
+        register.setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
+    
     public static void main(String args[]) {
+        //Cấu hình FlatLightLaf (mặc định theme là Light)
         FlatLightLaf.setup();
         new View_Login().setVisible(true);
     }

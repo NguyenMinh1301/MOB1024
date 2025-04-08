@@ -13,33 +13,41 @@ public class View_Register extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Student management V 1.0.1");
-
+        
+        //Tạo hint cho username, password, confirm password
         addHint(txtUsername, "Username");
         addHint(txtPassword, "Password");
         addHint(txtConfirmPassword, "Password");
     }
-
+    
+    //Hàm submit dùng để kiểm tra đầu vào và gọi service để thêm tài khoản vào hệ thống, cấp quyền
     public void submit() {
         Service_Register service = new Service_Register();
+        //Lấy thông tin người dùng nhập
         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
         String confirmPass = String.valueOf(txtConfirmPassword.getPassword());
 
+        //Vì hint cũng là kí tự nhận dạng được nên nếu bấm nút Register mà không nhập gì trương trình vẫn nhận username, password và confirm password
         if (user.equals("Username") || pass.equals("Password") || pass.equals("Password")) {
             Handle_Notification.announceWarning("Please enter your account and password");
             return;
         }
 
+        //Gọi service để kiểm tra nhập liệu và tài khoản và mât khẩu có sai hay không và kiểm tra đã có tài khoản nào trùng username hay chưa
         boolean b = service.register(user, pass, confirmPass);
+        //Nếu gặp lỗi từ service không thực hiện gì hết
         if (b == false) {
             return;
         } else if (b == true) {
+            //Nếu thêm tài khoản và cấp quyền thành công hiện lại màn hinh đăng nhập
             View_Login login = new View_Login();
             this.dispose();
             login.setVisible(true);
         }
     }
-
+    
+    //Tạo hint cho textField
     private void addHint(JTextField field, String hint) {
         field.setForeground(Color.GRAY);
         field.setText(hint);
@@ -204,31 +212,38 @@ public class View_Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        //Gọi hàm kiểm tra username, password, confirm password đầu vào
         submit();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+        //Nếu người dùng bấm Enter tự động gọi submit()
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtPasswordKeyReleased
 
     private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
+        //Nếu người dùng bấm Enter tự động gọi submit()
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtUsernameKeyReleased
 
     private void txtConfirmPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfirmPasswordKeyReleased
+        //Nếu người dùng bấm Enter tự động gọi submit()
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             submit();
         }
     }//GEN-LAST:event_txtConfirmPasswordKeyReleased
 
+    //Gọi lại màn hình Login nếu người dùng bấm nút
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        View_Login index = new View_Login();
+        View_Login login = new View_Login();
+        //Tắt màn hình Register
         this.dispose();
-        index.setVisible(true);
+        //Gọi màn hình Login
+        login.setVisible(true);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

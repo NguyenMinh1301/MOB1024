@@ -13,8 +13,10 @@ import src.Service.Handle_Notification;
 
 public class View_Index extends javax.swing.JFrame {
 
+    //Lưu thông tin người dùng đang đăng nhập hiện tại
     private Model_User currentUser;
 
+    //Báo lỗi nếu vào chương trình mà không qua bước đăng nhập
     public View_Index() {
         Handle_Notification.announceError("An error occurred, please log in again");
         this.setVisible(false);
@@ -22,6 +24,7 @@ public class View_Index extends javax.swing.JFrame {
         lg.setVisible(true);
     }
 
+    
     public View_Index(Model_User user) {
         this.currentUser = user;
         initComponents();
@@ -37,11 +40,14 @@ public class View_Index extends javax.swing.JFrame {
         panScreen.setLayout(new java.awt.CardLayout());
     }
 
+    //Kiểm tra quyền của người dùng
     private void checkPermission() {
+        //Lấy thông tin của người dùng (username, role)
         String username = currentUser.getUsername();
         int role = currentUser.getRole();
         String roleName = "";
 
+        //1 = admin | 2 = teacher | 3 = user
         switch (role) {
             case 1:
                 roleName = "admin";
@@ -73,17 +79,20 @@ public class View_Index extends javax.swing.JFrame {
             panScreen.add(scorePanel);
         }
 
+        //Hiện thông tin của người dùng bên trong giao diện
         this.setTitle("Student management V 1.0.0 | " + username);
         lblUserName.setText("username: " + username);
         lblRole.setText("role: " + roleName);
     }
-
+    
+    //Xoá màn hình cũ vẽ lại giao diện mới
     public void closeAll() {
         panScreen.removeAll();
         panScreen.revalidate();
         panScreen.repaint();
     }
-
+    
+    //Tạo hiệu ứng hover khi đưa chuột vào button
     public static void addHoverEffect(JButton btn) {
         btn.putClientProperty("JButton.buttonType", "roundRect");
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -103,7 +112,8 @@ public class View_Index extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    //Đổi theme cho chương trình
     public void switchTheme(boolean dark) {
         try {
             if (dark) {
@@ -334,33 +344,39 @@ public class View_Index extends javax.swing.JFrame {
 
     private void btnScoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScoreActionPerformed
         closeAll();
+        //Hiển thị panel Score
         View_Score scorePanel = new View_Score(currentUser);
         panScreen.add(scorePanel);
     }//GEN-LAST:event_btnScoreActionPerformed
 
     private void btnStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStudentActionPerformed
         closeAll();
+        //Hiển thị panel Student
         View_Student studentPanel = new View_Student();
         panScreen.add(studentPanel);
     }//GEN-LAST:event_btnStudentActionPerformed
 
     private void btnChartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChartActionPerformed
         closeAll();
+        //Hiển thị panel Chart
         View_Chart chartPanel = new View_Chart();
         panScreen.add(chartPanel);
     }//GEN-LAST:event_btnChartActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        //Tắt màn hình hiện tại và gọi lại màn Login
         this.setVisible(false);
         View_Login lg = new View_Login();
         lg.setVisible(true);
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnLightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLightActionPerformed
+        //Đổi theme Light
         switchTheme(false);
     }//GEN-LAST:event_btnLightActionPerformed
 
     private void btnDarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDarkActionPerformed
+        //Đổi theme Dark
         switchTheme(true);
     }//GEN-LAST:event_btnDarkActionPerformed
 

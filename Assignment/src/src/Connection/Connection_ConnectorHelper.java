@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/*Lớp ConnectorHelper kế thừa Connection_SQL_Server để lấy thông tin của HQT CSDL
+    + ConnectURL: Đường dẫn kết nối đến database
+    + SQL_User: Username
+    + SQL_Password: Mật khẩu
+*/
 public class Connection_ConnectorHelper extends Connection_SQL_Server {
     
     static {

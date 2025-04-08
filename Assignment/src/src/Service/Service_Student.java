@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import src.DAO.DAO_Students;
 import src.Model.Model_Students;
-import src.Service.Handle_Notification;
+
+/*
+    Lớp Service_Student implements lớp DAO_Students
+    Lấy các dữ liệu trong database xuất lên Table
+    Kiểm tra trước dữ liệu đầu vào trước khi thêm thông tin mới vào database
+*/
 
 public class Service_Student implements DAO_Students {
 
@@ -57,7 +62,8 @@ public class Service_Student implements DAO_Students {
                 Handle_Notification.announceWarning("<html>You have not entered <b>ADDRESS</b></html>");
                 return b;
             }
-
+            
+            //Regex kiểm tra email và phone
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
             String phoneRegex = "^(0|\\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$";
 

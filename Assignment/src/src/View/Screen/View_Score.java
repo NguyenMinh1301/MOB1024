@@ -26,25 +26,32 @@ import src.Service.Handle_Notification;
 public class View_Score extends javax.swing.JPanel {
 
     private Service_Score service;
+    //Lưu thông tin người dùng đang đăng nhập hiện tại
     private Model_User currentUser;
 
     public View_Score(Model_User user) {
         initComponents();
         this.currentUser = user;
         this.service = new Service_Score();
+        //Add giữ liệu Score vào bảng
         initScoreData();
-        initSearch();
+        //Add hint cho txtField tìm kiếm
         addHint(txtSearch, "Id or name");
-
+        //Listener cho phép tìm kiếm theo thời gian thực
+        initSearch();
+        
+        //Không cho phép sửa đổi trên các txtField
         txtIdStudent.setEditable(false);
         txtName.setEditable(false);
         txtEnglish.setEditable(false);
         txtComputer.setEditable(false);
         txtPhysical.setEditable(false);
         txtAverage.setEditable(false);
-
+        
+        //Gọi phương thức kiểm tra quyền
         checkPermission();
         
+        //Khởi tạo hiệu ứng hover cho từng nút
         addHoverEffect(btnAdd);
         addHoverEffect(btnUpdate);
         addHoverEffect(btnRemove);
@@ -53,9 +60,12 @@ public class View_Score extends javax.swing.JPanel {
         addHoverEffect(btnRefresh);
     }
 
+    //Phương thức kiểm tra quyền
     private void checkPermission() {
+        //Lấy role của user
         int role = currentUser.getRole();
-
+        
+        //Nếu role = 3 (user) tắt tất cả chức năng chỉ để lại chức năng tìm kiếm
         if (role == 3) { //User
             btnAdd.setEnabled(false);
             btnUpdate.setEnabled(false);
@@ -69,6 +79,7 @@ public class View_Score extends javax.swing.JPanel {
         }
     }
 
+    //Lấy dữ liệu từ database sau đó xuất lên table
     public void initScoreData() {
         DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
         model.setRowCount(0);
@@ -83,10 +94,11 @@ public class View_Score extends javax.swing.JPanel {
             });
         }
     }
-
+    
+    //Xuất dữ liệu đã được sort trong danh sách lên table
     public void tableSorted(List<Model_Score> list) {
         DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
-        model.setRowCount(0); // Clear
+        model.setRowCount(0);
 
         for (Model_Score s : list) {
             float avg = (s.getEnglish() + s.getComputer() + s.getPhysical()) / 3f;
@@ -100,37 +112,47 @@ public class View_Score extends javax.swing.JPanel {
             });
         }
     }
-
+    
+    //Listener để tìm kiếm ngay khi có sự thay đổi trong txtField người dùng nhập
     public void initSearch() {
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            //Người dùng nhập thêm chữ
             @Override
             public void insertUpdate(DocumentEvent e) {
                 performLiveSearch();
             }
 
+            //Người dùng xoá chữ
             @Override
             public void removeUpdate(DocumentEvent e) {
                 performLiveSearch();
             }
 
+            //Người dùng sửa chữ
             @Override
             public void changedUpdate(DocumentEvent e) {
                 performLiveSearch();
             }
         });
     }
-
+    
+    //Hàm dùng để tìm kiếm
     private void performLiveSearch() {
+        //Lấy keyword từ txtField người dùng nhập
         String keyword = txtSearch.getText().trim();
+        //Tránh tìm kiếm trùng với hint trên txtField
         if (keyword.equals("Id or name") || keyword.isEmpty()) {
             initScoreData();
             return;
         }
 
+        //Gọi DAO thông qua service để tìm kiếm tên hoặc id. Nếu có tồn tại tên hoặc id trùng với keyword lưu vào danh sách
         List<Model_Score> result = service.searchScore(keyword);
         DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
+        //Xoá danh sách cũ đang có
         model.setRowCount(0);
 
+        //Add dữ liệu trong danh sách mới vào bảng
         for (Model_Score s : result) {
             model.addRow(new Object[]{
                 s.getIdStudent(),
@@ -141,7 +163,8 @@ public class View_Score extends javax.swing.JPanel {
             });
         }
     }
-
+    
+    //Thêm màu cho điểm
     private void setColorByScore(JTextField field, float score) {
         if (score < 5.0f) {
             field.setForeground(Color.RED);
@@ -152,6 +175,7 @@ public class View_Score extends javax.swing.JPanel {
         }
     }
 
+    //Tạo hint cho textField
     private void addHint(JTextField field, String hint) {
         field.setForeground(Color.GRAY);
         field.setText(hint);
@@ -175,6 +199,7 @@ public class View_Score extends javax.swing.JPanel {
         });
     }
 
+    //Tạo hiệu ứng hover cho button
     public static void addHoverEffect(JButton btn) {
         btn.putClientProperty("JButton.buttonType", "roundRect");
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -475,15 +500,18 @@ public class View_Score extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        //Hiện thị cửa sổ Add lên màn hình
         SubScreen_AddScore add = new SubScreen_AddScore(this);
         add.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        //Gọi lại hàm xuất data lên table
         initScoreData();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void tblScoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblScoreMouseClicked
+        //Khi người dùng bấm vào một sinh viên trong bảng hiện điểm của sinh viên đó lên các textField
         int index = tblScore.getSelectedRow();
         if (index != -1) {
             String idStudent = tblScore.getValueAt(index, 0).toString();
@@ -500,7 +528,8 @@ public class View_Score extends javax.swing.JPanel {
             txtComputer.setText(String.valueOf(computer));
             txtPhysical.setText(String.valueOf(physical));
             txtAverage.setText(String.format("%.2f", average));
-
+            
+            //Set màu cho điểm
             setColorByScore(txtEnglish, english);
             setColorByScore(txtComputer, computer);
             setColorByScore(txtPhysical, physical);
@@ -509,42 +538,50 @@ public class View_Score extends javax.swing.JPanel {
     }//GEN-LAST:event_tblScoreMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        //Lấy địa chỉ dòng người dùng đang chọn
         DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
         int index = tblScore.getSelectedRow();
-
+        
+        //Nếu người dùng không chọn sinh viên update báo lỗi và huỷ thao tác
         if (index == -1) {
             Handle_Notification.announceWarning("Cannot update student if not selected !");
             return;
         }
-
+        
+        //Lấy thông tin trước khi update của sinh viên
         String idStudent = model.getValueAt(index, 0).toString();
         String name = model.getValueAt(index, 1).toString();
         String english = model.getValueAt(index, 2).toString();
         String computer = model.getValueAt(index, 3).toString();
         String physical = model.getValueAt(index, 4).toString();
-
+        
+        //Gọi cửa sổ update và truyền dữ liệu của sinh viên
         SubScreen_UpdateScore updateForm = new SubScreen_UpdateScore(idStudent, name, english, computer, physical, this);
         updateForm.setVisible(true);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        //Lấy vị trí người dùng chọn
         DefaultTableModel model = (DefaultTableModel) tblScore.getModel();
         int index = tblScore.getSelectedRow();
-
+        
+        //Nếu người dùng không chọn sinh viên remove báo lỗi và huỷ thao tác
         if (index == -1) {
             Handle_Notification.announceWarning("Cannot remove student if not selected !");
             return;
         }
-
+        
+        //Lấy dữ liệu của sinh viên
         String idStudent = model.getValueAt(index, 0).toString();
         String name = model.getValueAt(index, 1).toString();
-
+        
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete score of student " + name + " ?", "Notification", JOptionPane.YES_NO_OPTION);
 
         if (confirm != JOptionPane.YES_NO_OPTION) {
             return;
         }
-
+        
+        //Mời người dùng nhập lại tên của sinh viên nếu nhập đúng mới thực hiện xoá
         boolean isName = false;
         while (true) {
             String inputName = JOptionPane.showInputDialog(this, "Please re-enter student name " + name + " to confirm");
@@ -574,9 +611,10 @@ public class View_Score extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        //Tìm kiếm theo id hoặc name
         String keyword = txtSearch.getText().trim();
-        if (keyword.isEmpty()) {
-            Handle_Notification.announceWarning("Please enter ID or Name to search.");
+        if (keyword.equals("Id or name") || keyword.isEmpty()) {
+            initScoreData();
             return;
         }
 
@@ -596,11 +634,13 @@ public class View_Score extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionActionPerformed
+        //Hiện cửa sổ option lên màn hình
         SubScreen_OptionScore option = new SubScreen_OptionScore(this);
         option.setVisible(true);
     }//GEN-LAST:event_btnOptionActionPerformed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        //Gọi service Export ra file excel
         try {
             Service_ExportHelper.exportToCSV(tblScore);
         } catch (IOException ex) {

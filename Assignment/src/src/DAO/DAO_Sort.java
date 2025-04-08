@@ -10,6 +10,11 @@ import src.Connection.Connection_ConnectorHelper;
 import static src.Service.Handle_Exception.HandleException;
 import src.Model.Model_Score;
 
+/*
+    Lớp Data Access Object dùng để giao tiếp với Database
+    Sử dụng interface để các lớp khác implement (sử dụng default method mà không cần override)
+*/
+
 public interface DAO_Sort {
 
     default List<Model_Score> getScoresSortById() {
@@ -21,7 +26,11 @@ public interface DAO_Sort {
             ORDER BY S.IdStudent ASC;
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -46,7 +55,11 @@ public interface DAO_Sort {
             ORDER BY ST.Name ASC;
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -71,7 +84,11 @@ public interface DAO_Sort {
             ORDER BY (S.English + S.Computer + S.Physical) DESC;
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -97,7 +114,11 @@ public interface DAO_Sort {
             ORDER BY AVG_SCORE DESC;
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -122,7 +143,11 @@ public interface DAO_Sort {
             ORDER BY S.English DESC
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -147,7 +172,11 @@ public interface DAO_Sort {
             ORDER BY S.Computer DESC
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -172,7 +201,11 @@ public interface DAO_Sort {
             ORDER BY S.Physical DESC
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -198,7 +231,11 @@ public interface DAO_Sort {
             ORDER BY AvgScore DESC
         """;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 list.add(new Model_Score(
                         rs.getString("IdStudent"),

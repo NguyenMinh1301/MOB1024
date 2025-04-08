@@ -7,12 +7,18 @@ import java.sql.PreparedStatement;
 import src.Connection.Connection_ConnectorHelper;
 import static src.Service.Handle_Exception.HandleException;
 
+/*
+    Lớp Data Access Object dùng để giao tiếp với Database
+    Sử dụng interface để các lớp khác implement (sử dụng default method mà không cần override)
+*/
+
 public interface DAO_Register {
 
     default int getRoleIdByName(String roleName) {
         String SQL = "SELECT roleid FROM ROLES WHERE rolename = ?";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);) {
             prstm.setString(1, roleName);
             ResultSet rs = prstm.executeQuery();
             if (rs.next()) {
@@ -27,7 +33,8 @@ public interface DAO_Register {
     default boolean insertUser(String username, String hashedPassword, int roleid) {
         String SQL = "INSERT INTO USERS (username, password, roleid) VALUES (?, ?, ?);";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);) {
             prstm.setString(1, username);
             prstm.setString(2, hashedPassword);
             prstm.setInt(3, roleid);
@@ -42,7 +49,8 @@ public interface DAO_Register {
     default boolean isExistUser(String username) {
         String SQL = "SELECT username FROM USERS WHERE username = ?;";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);) {
             prstm.setString(1, username);
             ResultSet rs = prstm.executeQuery();
             return rs.next();

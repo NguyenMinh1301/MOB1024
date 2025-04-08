@@ -3,7 +3,12 @@ package src.Service;
 import java.util.List;
 import src.DAO.DAO_Score;
 import src.Model.Model_Score;
-import src.Service.Handle_Notification;
+
+/*
+    Lớp Service_Score implements lớp DAO_Score
+    Lấy các dữ liệu trong database xuất lên Table
+    Kiểm tra trước dữ liệu đầu vào trước khi thêm thông tin mới vào database
+*/
 
 public class Service_Score implements DAO_Score {
 

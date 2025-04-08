@@ -11,13 +11,22 @@ import src.Model.Model_Students;
 import src.Connection.Connection_ConnectorHelper;
 import static src.Service.Handle_Exception.HandleException;
 
+/*
+    Lớp Data Access Object dùng để giao tiếp với Database
+    Sử dụng interface để các lớp khác implement (sử dụng default method mà không cần override)
+*/
+
 public interface DAO_Students {
 
     default List<Model_Students> getAllStudents() {
         List<Model_Students> studentsList = new ArrayList<>();
         String SQL = "SELECT * FROM STUDENTS";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stm = conn.createStatement(); 
+                ResultSet rs = stm.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 studentsList.add(new Model_Students(
                         rs.getString("IdStudent"),
@@ -40,7 +49,10 @@ public interface DAO_Students {
         List<Model_Students> studentsList = new ArrayList<>();
         String SQL = "SELECT * FROM STUDENTS WHERE IdStudent LIKE ? OR Name LIKE ?";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL)) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL)
+                
+                ) {
             String key = "%" + keyword + "%";
             prstm.setString(1, key);
             prstm.setString(2, key);
@@ -69,7 +81,11 @@ public interface DAO_Students {
         String SQL = "SELECT s.IdStudent, s.Name FROM STUDENTS s LEFT JOIN SCORES sc on s.IdStudent = sc.IdStudent WHERE sc.IdStudent IS NULL;";
 
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stm = conn.createStatement(); 
+                ResultSet rs = stm.executeQuery(SQL);
+                
+                ) {
             while (rs.next()) {
                 Model_Students studentList = new Model_Students();
                 studentList.setId(rs.getString("IdStudent"));
@@ -87,7 +103,11 @@ public interface DAO_Students {
         String nextId = "TV00001";
         String SQL = "SELECT LastNumber + 1 AS nextNum FROM STUDENT_COUNTER";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stmt = conn.createStatement(); 
+                ResultSet rs = stmt.executeQuery(SQL);
+                
+                ) {
             if (rs.next()) {
                 int num = rs.getInt("nextNum");
                 nextId = "TV" + String.format("%05d", num);
@@ -102,7 +122,10 @@ public interface DAO_Students {
         String SQL = "INSERT INTO STUDENTS (Name, Email, Phone, Gender, Address, Avatar) VALUES (?, ?, ?, ?, ?, ?);";
         int check = 0;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);
+                
+                ) {
             prstm.setString(1, name);
             prstm.setString(2, email);
             prstm.setString(3, phone);
@@ -121,7 +144,10 @@ public interface DAO_Students {
     default boolean updateStudent(String id, String name, String email, String phone, int gender, String address, String avatar) {
         String SQL = "UPDATE STUDENTS SET Name = ?, Email = ?, Phone = ?, Gender = ?, Address = ?, Avatar = ? WHERE IdStudent = ?";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);
+                
+                ) {
             prstm.setString(1, name);
             prstm.setString(2, email);
             prstm.setString(3, phone);
@@ -143,7 +169,10 @@ public interface DAO_Students {
     default boolean deleteStudent(String id) {
         String SQL = "DELETE FROM STUDENTS WHERE IdStudent = ?";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);
+                
+                ) {
             prstm.setString(1, id);
             prstm.executeUpdate();
             return true;

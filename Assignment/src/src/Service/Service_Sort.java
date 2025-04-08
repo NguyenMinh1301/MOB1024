@@ -4,6 +4,11 @@ import java.util.List;
 import src.DAO.DAO_Sort;
 import src.Model.Model_Score;
 
+/*
+    Lớp Service_Sort implements lớp DAO_Sort
+    Lấy các dữ liệu trong database xuất lên Table
+*/
+
 public class Service_Sort implements DAO_Sort {
 
     public List<Model_Score> sortById() {

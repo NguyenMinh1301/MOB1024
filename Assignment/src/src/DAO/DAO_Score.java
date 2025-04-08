@@ -11,6 +11,11 @@ import src.Connection.Connection_ConnectorHelper;
 import src.Model.Model_Score;
 import static src.Service.Handle_Exception.HandleException;
 
+/*
+    Lớp Data Access Object dùng để giao tiếp với Database
+    Sử dụng interface để các lớp khác implement (sử dụng default method mà không cần override)
+*/
+
 public interface DAO_Score {
 
     default List<Model_Score> getAllScores() {
@@ -18,7 +23,11 @@ public interface DAO_Score {
         String SQL = "SELECT s.IdStudent, st.Name, s.English, s.Computer, s.Physical FROM SCORES s JOIN STUDENTS st ON s.IdStudent = st.IdStudent";
 
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(SQL)) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                Statement stm = conn.createStatement(); 
+                ResultSet rs = stm.executeQuery(SQL)
+                
+                ) {
             while (rs.next()) {
                 scoreList.add(new Model_Score(
                         rs.getString("IdStudent"),
@@ -39,7 +48,10 @@ public interface DAO_Score {
         String SQL = "INSERT INTO SCORES (IdStudent, English, Computer, Physical) VALUES (?, ?, ?, ?);";
         int check = 0;
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);
+                
+                ) {
             prstm.setString(1, id);
             prstm.setFloat(2, english);
             prstm.setFloat(3, computer);
@@ -56,7 +68,10 @@ public interface DAO_Score {
     default boolean updateScore(String idStudent, String name, float english, float computer, float physical) {
         String SQL = "UPDATE SCORES SET English = ?, Computer = ?, Physical = ? WHERE IdStudent = ?;";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);
+                
+                ) {
             prstm.setFloat(1, english);
             prstm.setFloat(2, computer);
             prstm.setFloat(3, physical);
@@ -75,7 +90,10 @@ public interface DAO_Score {
     default boolean deleteScore(String idStudent) {
         String SQL = "DELETE FROM SCORES WHERE IdStudent = ?";
         try (
-                Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL);) {
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL);
+                
+                ) {
             prstm.setString(1, idStudent);
             prstm.executeUpdate();
             return true;
@@ -91,7 +109,11 @@ public interface DAO_Score {
                 + "FROM SCORES s JOIN STUDENTS st ON s.IdStudent = st.IdStudent "
                 + "WHERE s.IdStudent LIKE ? OR st.Name LIKE ?";
 
-        try (Connection conn = Connection_ConnectorHelper.connection(); PreparedStatement prstm = conn.prepareStatement(SQL)) {
+        try (
+                Connection conn = Connection_ConnectorHelper.connection(); 
+                PreparedStatement prstm = conn.prepareStatement(SQL)
+                
+                ) {
             String key = "%" + keyword + "%";
             prstm.setString(1, key);
             prstm.setString(2, key);
